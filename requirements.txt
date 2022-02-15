@@ -5,4 +5,6 @@ nltk
 numpy
 pandas
 deep_translator
-
+symspellpy
+sklearn
+scipy
