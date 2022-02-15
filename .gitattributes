@@ -1,3 +1,6 @@
+<<<<<<< HEAD
 stanford-corenlp-4.3.1 filter=lfs diff=lfs merge=lfs -text
 stanford-corenlp-4.3.1/stanford-corenlp-4.3.1-1.models.jar filter=lfs diff=lfs merge=lfs -text
+=======
+>>>>>>> 0261aaf (add read me)
 *.jar filter=lfs diff=lfs merge=lfs -text
