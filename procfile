@@ -1,2 +1,1 @@
-web: gunicorn ensemble_analyzer:manage.py
-web: java -mx1g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9010 -timeout 15000 -quiet
+web: gunicorn ensemble_analyzer.wsgi
