@@ -1,2 +1,2 @@
-web: gunicorn {{ ensemble_analyzer }}.wsgi
+web: gunicorn --pythonpath absentilyzer absentilyzer.wsgi
 web: java -mx1g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 9010 -timeout 15000 -quiet
