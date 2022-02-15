@@ -1,0 +1,26 @@
+Student,Professor A, Professor B
+1,WL,Accept
+2,WL,Accept
+3,Accept,Reject
+4,Reject,Reject
+5,Reject,Reject
+6,WL,Accept
+7,WL,Accept
+8,Accept,WL
+9,WL,WL
+10,Reject,Reject
+11,Reject,Accept
+12,Reject,Reject
+13,Reject,Accept
+14,Reject,Reject
+15,WL,Accept
+16,Accept,Accept
+17,WL,Reject
+18,Reject,Accept
+19,WL,Accept
+20,Accept,Accept
+21,WL,WL
+22,WL,Reject
+23,Accept,Accept
+24,Reject,Reject
+25,Accept,Accept

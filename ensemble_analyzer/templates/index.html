@@ -1,0 +1,385 @@
+<!-- 
+    This module extends the base template and is where the analyzer is located.
+
+    # Author            : Group 4
+    # Calling Sequence  : N/A
+    # Date Written      : October 24, 2021
+    # Date Revised      : December 12, 2021
+    # Purpose           : Serves as the template for the default page shown
+                          on the website if no other page is specified when 
+                          a user requests the site.
+-->
+
+{% extends 'base.html' %}
+{% url 'public:how' as how_url %}
+{% load static %}
+{% block title %} Ensemble Classifier {% endblock %}
+
+{% block content %}
+<!-- Header of the Page -->
+<header style="background-color: #2C3E50;" class="masthead text-white text-center">
+    <div class="container d-flex align-items-center flex-column">
+        <h5 class="masthead-heading text-uppercase mb-0">Aspect Based Sentiment Analyzer</h5>
+        <!-- Masthead Subheading-->
+    </div>
+</header>
+
+<!-- Page's main contents -->
+<div class="container contents py-5" style="height: 50vh;">
+        <form action="" method="POST" enctype="multipart/form-data" id="form_text">
+            {% csrf_token %}
+            {{ form.text }}
+            <div class="btn-toolbar">
+                <button type="button" class="btn btn-primary btn-sm" id="csvModal" data-bs-toggle="modal" data-bs-target="#exampleModal">Upload CSV</button>
+                <p class="px-2">or</p>
+                <button type="submit" id="btnClassify" class="btn btn-primary btn-sm" onclick="show(loader)">Classify</button>
+            </div>
+        </form>
+</div>
+
+<!-- SPINNER -->
+<div id="loader" style="display: none;">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+
+<!-- If inputted passed the requirements and has the right format, then continue -->
+{% if text_allowed == "yes" %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive py-5" id="tables">
+                <h6>Preprocessing</h6>
+                <div style="table-layout: fixed;">
+                    <table class="table" id="table1">
+                        <thead class="table text-center" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
+                            <tr>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Original Input</th>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Preprocessed Input</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,values in preprocessed_table_dict.items %}
+                                <tr>
+                                        <td style="text-align: left"> {{ values.0 }} </td>
+                                        <td style="text-align: center;"> {{ values.1 }} </td>
+                                </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive py-5" id="tables">
+                <h6>Aspect Term Polarity Classification</h6>
+                <div style="table-layout: fixed;">
+                    <table class="table" id="table1">
+                        <thead class="table text-center" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
+                            <tr>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Original Input</th>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Extracted Aspects</th>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Aspect Polarity/ies</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,values in main_table_dict.items %}
+                                <tr>
+                                        <td style="text-align: left"> {{ values.0 }} </td>
+                                        <td style="text-align: center;"> {{ values.1 }} </td>
+                                        <td style="text-align: center"> {{ values.2 }} </td>
+                                </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive py-5" id="tables">
+                <h6>Sentence Polarity</h6>
+                <div style="table-layout: fixed;">
+                    <table class="table" id="table1">
+                        <thead class="table text-center" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
+                            <tr>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Original Input</th>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Sentence Polarity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,values in final_sentence_polarity_table_dict.items %}
+                                <tr>
+                                        <td style="text-align: left"> {{ values.0 }} </td>
+                                        {% if values.1 == 'pos' %}
+                                            {% with name="positive" %}
+                                            <td style="text-align: center"> {{ name }} </td>
+                                            {% endwith %}
+                                        {% elif values.1 == 'neg' %}
+                                            {% with name="negative" %}
+                                            <td style="text-align: center"> {{ name }} </td>
+                                            {% endwith %}
+                                        {% elif values.1 == 'neu' %}
+                                            {% with name="neutral" %}
+                                            <td style="text-align: center"> {{ name }} </td>
+                                            {% endwith %}
+                                        {% endif %}
+                                        
+                                </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+
+<!-- If the file uploaded passed the requiremens and has the right format, then continue -->
+{% elif csv_allowed == "yes" %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive py-5" id="tables">
+                <h6>Preprocessing</h6>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar" style="table-layout: fixed;">
+                    <table class="table" id="table1">
+                        <thead class="table text-center" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
+                            <tr>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Original Input</th>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Preprocessed Input</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,values in preprocessed_table_dict.items %}
+                                <tr>
+                                        <td style="text-align: left"> {{ values.0 }} </td>
+                                        <td style="text-align: center;"> {{ values.1 }} </td>
+                                </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive py-5" id="tables">
+                <h6>Aspect Term Polarity Classification</h6>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar" style="table-layout: fixed;">
+                    <table class="table" id="table1">
+                        <thead class="table text-center" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
+                            <tr>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Original Input</th>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Extracted Aspects</th>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Aspect Polarity/ies</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,values in main_table_dict.items %}
+                                <tr>
+                                        <td style="text-align: left"> {{ values.0 }} </td>
+                                        <td style="text-align: center;"> {{ values.1 }} </td>
+                                        <td style="text-align: center"> {{ values.2 }} </td>
+                                </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive py-5" id="tables">
+                <h6>Sentence Polarity</h6>
+                <div class="table-wrapper-scroll-y my-custom-scrollbar" style="table-layout: fixed;">
+                    <table class="table" id="table1">
+                        <thead class="table text-center" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
+                            <tr>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Original Input</th>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Sentence Polarity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,values in final_sentence_polarity_table_dict.items %}
+                                <tr>
+                                        <td style="text-align: left"> {{ values.0 }} </td>
+                                        {% if values.1 == 'pos' %}
+                                            {% with name="positive" %}
+                                            <td style="text-align: center"> {{ name }} </td>
+                                            {% endwith %}
+                                        {% elif values.1 == 'neg' %}
+                                            {% with name="negative" %}
+                                            <td style="text-align: center"> {{ name }} </td>
+                                            {% endwith %}
+                                        {% elif values.1 == 'neu' %}
+                                            {% with name="neutral" %}
+                                            <td style="text-align: center"> {{ name }} </td>
+                                            {% endwith %}
+                                        {% endif %}
+                                        
+                                </tr>
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+</div>
+{% endif %}
+
+<!-- JS Code for the Spinner -->
+<script>
+    $('#form_text').submit(function() {
+        // show loader
+        document.getElementById("loader").style.display = 'block';
+    });
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="border-color: #2C3E50;">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="POST" enctype="multipart/form-data" id="form_csv">
+                    <div class="container-fluid">
+                        <div class="row notes">
+                            <p><strong>Note!</strong> The column you want to classify must have an "input" header name. For more details, <a class="noteLink" href="http://127.0.0.1:7000/HowToUse#features">Click here</a>.</p>
+                        </div>
+                        <div class="row">
+                            {% csrf_token %}
+                            {{ form.csv }}
+                        </div>
+                        <div class="btn-toolbar">
+                            <button id="preview" type="button" class="btn btn-primary btn-sm" style="height: 33px;">Preview</button>
+                            <p class="px-2">or</p>
+                            <button type="submit" id="btnClassify" data-bs-dismiss="modal" class="btn btn-primary btn-sm">Classify</button>
+                        </div>                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function previewCSV(evt) {
+            document.getElementById('preview').addEventListener("click", ()=>{
+                var myWindow = window.open("", "", "width=800,height=500");
+                var file = evt.target.files[0];
+                if (file) {
+                        var read = new FileReader();
+                        read.onload = function(e){
+                            var contents = e.target.result;
+                            var lines = contents.split("\n"), output = [];
+                            for (var i=0; i<lines.length; i++) {
+                                output.push("<tr><td>" + lines[i].split(",").join("</td><td>") + "</td></tr>");
+                            }
+                            output = "<table>" + output.join("") + "</table>";
+                            myWindow.document.write(output);
+                        }
+                        read.readAsText(file);
+                        myWindow.document.write(output);
+                } else {
+                    alert("Failed to load file! Check if the file type is correct.");
+                }
+            });
+        }
+        document.getElementById('FileUploadCSV').addEventListener('change', previewCSV);
+
+        $('#form_csv').submit(function() {
+            // show loader
+            document.getElementById("loader").style.display = 'block';
+        });
+    </script>
+</div>
+
+<!-- If there is no input and the form was submitted, return the error alert box -->
+{% if no_input %}
+    <script>alert("You have to write or upload something!")</script> 
+{% endif %}
+
+<!-- If the file type of the uploaded file is not csv, return the error alert box -->
+{% if filetype_error %}
+    <script>alert("Unsupported file type.")</script> 
+{% endif %}
+
+<!-- If the uploaded CSV exceeds the minimum row allowed, return the error alert box -->
+{% if csv_rowError %}
+    <script>alert("Uploaded CSV File is greater than 500 rows.")</script> 
+{% endif %}
+
+<!-- Footer of the Page -->
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mt-1 mb-0">
+                <p class="mb-3 text-center" style="color:#262626; font-size:15px;">© 2021 copyright all right reserved</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS for the submission of the form -->
+<script>
+    $('#form_text').submit(function() {
+        // show loader
+        document.getElementById("loader").style.display = 'block';
+    });
+
+    function previewCSV(evt) {
+        document.getElementById('preview').addEventListener("click", ()=>{
+            var myWindow = window.open("", "", "width=800,height=500");
+            var file = evt.target.files[0];
+            if (file) {
+                    var read = new FileReader();
+                    read.onload = function(e){
+                        var contents = e.target.result;
+                        var lines = contents.split("\n"), output = [];
+                        for (var i=0; i<lines.length; i++) {
+                            output.push("<tr><td>" + lines[i].split(",").join("</td><td>") + "</td></tr>");
+                        }
+                        output = "<table>" + output.join("") + "</table>";
+                        myWindow.document.write(output);
+                    }
+                    read.readAsText(file);
+                    myWindow.document.write(output);
+            } else {
+                alert("Failed to load file! Check if the file type is correct.");
+            }
+        });
+    }
+    document.getElementById('FileUploadCSV').addEventListener('change', previewCSV);
+
+    $('#form_csv').submit(function() {
+        // show loader
+        document.getElementById("loader").style.display = 'block';
+        $.ajax({
+            method: 'POST',
+            url: 'ensemble_analyzer/apps/public/views.py',
+            data: {'yourJavaScriptArrayKey': yourJavaScriptArray},
+            success: function (data) {
+                //this gets called when server returns an OK response
+                alert("it worked!");
+            },
+            error: function (data) {
+                alert("it didnt work");
+            }
+        });
+    });
+
+</script>
+{% endblock %}

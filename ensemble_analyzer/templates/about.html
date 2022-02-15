@@ -1,0 +1,25 @@
+<!-- 
+    This module extends the base template and is where the the details of the authors are located
+
+    # Author            : Group 4
+    # Calling Sequence  : N/A
+    # Date Written      : October 5, 2021
+    # Date Revised      : December 9, 2021
+    # Purpose           : Describes the authors of the website
+-->
+
+
+{% extends 'base.html' %}
+{% block title %} About {% endblock %}
+
+{% block content %}
+<!-- Header of the Page -->
+<header style="background-image: url('static/css/img/home-bg.jpg');height: 91vh;display: flex;justify-content: center;align-items: center;color: #2C3E50;" class="masthead text-center howHead">
+    <div class="container d-flex align-items-center flex-column">
+        <h5 class="masthead-heading text-uppercase mb-0">ABOUT US</h5>
+        <!-- Masthead Subheading-->
+        <p class="masthead-subheading font-weight-light mb-0">Get to know the authors of the Aspect Based Sentiment Analyzer</p>
+        <a class="btn btn-primary text-uppercase mt-3" id="getStarted" href="#steps">Proceed</a>
+    </div>
+</header>
+{% endblock %}

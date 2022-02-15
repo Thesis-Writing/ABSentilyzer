@@ -1,0 +1,178 @@
+<!-- 
+    This module extends the base template and is where the the documentation is located
+
+    # Author            : Group 4
+    # Calling Sequence  : N/A
+    # Date Written      : October 5, 2021
+    # Date Revised      : December 9, 2021
+    # Purpose           : Describes and explain the features of the website as well as 
+                          the instructions in using the website
+-->
+
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} How to Use? {% endblock %}
+
+{% block content %}
+<!-- Header of the Page -->
+<header style="background-image: url('static/css/img/home-bg.jpg');height: 91vh;display: flex;justify-content: center;align-items: center;color: #2C3E50;" class="masthead text-center howHead">
+    <div class="container d-flex align-items-center flex-column">
+        <h5 class="masthead-heading text-uppercase mb-0">WELCOME TO AB SENTILYZER</h5>
+        <!-- Masthead Subheading-->
+        <p class="masthead-subheading font-weight-light mb-0">An Aspect-Based Sentiment Analyzer Tool</p>
+        <!-- <a class="btn btn-primary text-uppercase mt-3" id="getStarted" href="#features">Get Started</a> -->
+    </div>
+</header>
+
+<!-- Features of System -->
+<section class="page-section bg-light" id="features">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Features</h2>
+            <p class="section-subheading text-muted">A step by step guide in using the AB Sentilyzer.</p>
+        </div>
+        <div class="row mt-5" style="gap: 34px; display: flex; justify-content: center; align-items: center;">
+            <div class="card" style="width: 18rem;">
+                <img src="{% static 'css/img/textIcon.png' %}" class="card-img-top featureIcon" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Single Input Classification</h5>
+                    <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#featureModal1">
+                        <p class="card-text" style="display: flex; justify-content: start; gap: 8px;">
+                            More details 
+                            <a style="cursor: pointer; color: #16C79A;" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#featureModal1">
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </p>
+                    </a>
+                </div>
+              </div>
+              <div class="card" style="width: 18rem;">
+                <img src="{% static 'css/img/csvIcon.png' %}" class="card-img-top featureIcon" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Multiple Input Classification</h5>
+                    <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#featureModal2">
+                        <p class="card-text" style="display: flex; justify-content: start; gap: 8px;">
+                            More details 
+                            <a style="cursor: pointer; color: #16C79A;" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#featureModal2">
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </p>
+                    </a>
+                    
+                </div>
+              </div>
+        </div>
+    </div>
+</section>
+
+<!-- Guide on ASPS -->
+<section class="page-section bg-light" id="confidenceDetail">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Aspect Sentiment Polarity Scores</h2>
+            <p class="section-subheading text-muted">A guide on how the aspect sentiment polarity scores were calculated</p>
+        </div>
+        <div class="mt-5 mb-4">
+            <h6 class="masthead-heading mb-0">What is a Sentiment Score?</h6>
+            <p class="masthead-subheading font-weight-light mb-0" style="text-align: justify;">A sentiment score is a mean to measure the sentiment. The score makes a clear understanding and interpretation of what the sentiment wants to show. In sentence-level sentiment analysis, it is used to determine if a sentiment belongs to a certain class. A good sentiment score depends on the good threshold or model that was implemented.</p>
+        </div>
+        <div class="mt-3 mb-4">
+            <h6 class="masthead-heading mb-0">What is an Aspect Sentiment Score?</h6>
+            <p class="masthead-subheading font-weight-light mb-0" style="text-align: justify;">In relation to the sentiment score, an aspect sentiment score simply provides scoring on extracted aspects to determine its confidence to a certain class. For example, the aspect "modular learning" exists in all classes, the aspect score will identify how confident the aspect to the classes depending on the input.</p>
+        </div>
+        <div class="mt-3 mb-4">
+            <h6 class="masthead-heading mb-0">Aspect-Sentiment Polarity Scoring of AB SentiLyzer</h6>
+            <ul>
+                <li class="mb-2 mt-2">
+                    <p style="font-weight: bold;">Prediction Probability</p>
+                    <p>To calculate the aspect sentiment score, we took the prediction probability of the extracted aspects in each class as the confidence score. This prediction probability comes from the algorithm after detecting the aspect's probability to a sentiment class. The sentiment classes are Positive, Negative, and Neutral.</p>
+                </li>
+                <li class="mb-2">
+                    <p style="font-weight: bold;">Threshold Assignment for Single Input</p>
+                    <p>
+                        A default 0.5 threshold is assigned whether an aspect belongs to a class. If the prediction probability of an aspect in a class is > 0.5, then the aspect score belongs in the class, if not then it does not belong to the class.
+                        <ul>
+                            <li>
+                                aspect polarity score < 0.5, the prediction probability is not included in the score and is automatically 0.0.
+                            </li>
+                            <li>
+                                aspect polarity score ≥ 0.5, the prediction probability is included in the score.
+                            </li>
+                        </ul>
+                    </p>
+                </li>
+                <li class="mb-2">
+                    <p style="font-weight: bold;">Condition for Evaluation of Overall Aspect Polarity</p>
+                    <p>
+                        The scores are used to evaluate the probability of an aspect to be properly detected in each sentiment class. After calculating the prediction probability, the overall polarity of an aspect is determined. The highest calculated polarity score to an aspect will be assigned as the overall polarity of the aspect. The aspect score per class is given in percentage. There are five (5) possible Overall Aspect Scores: 
+                        <ol>
+                            <li>
+                                Positive - If the highest polarity of the aspect is positive.
+                            </li>
+                            <li>
+                                Negative - If the highest polarity of the aspect is negative.
+                            </li>
+                            <li>
+                                Neutral - If the highest polarity of the aspect is neutral.
+                            </li>
+                            <li>
+                                Bipolar - If there are two equal classes in an aspect.
+                            </li>
+                            <li>
+                                Conflict - If all the aspects have the same polarity or 0.0 in polarity.
+                            </li>
+                        </ol>
+                    </p>
+                </li>
+            </ul>  
+        </div>
+        <div class="mt-3 mb-4 pb-5">
+            <h6 class="masthead-heading mb-0">Overall Percentage Score for Multiple/CSV Upload</h6>
+            <p class="masthead-subheading font-weight-light mb-0" style="text-align: justify;">To get the percentage of Positive, Negative, Neutral, Bipolar, and Conflict aspects, each aspects in overall scores are combined individually and divided to the number of aspects extracted in the file. With this, we can clearly determine and understand the frequency and distribution of aspects in the uploaded file with each of their overall scores.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Feature modals -->
+<!-- Feature 1 Text-->
+<div class="portfolio-modal modal fade" id="featureModal1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            Insert Instructions Here
+        </div>
+    </div>
+</div>
+<!-- Feature 2 CSV -->
+<div class="portfolio-modal modal fade" id="featureModal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            Insert Instructions here
+        </div>
+    </div>
+</div>
+
+<!-- JS Scripts for UI -->
+<script>
+    jQuery(document).ready(function() {
+        var offset = 220;
+        var duration = 500;
+        jQuery(window).scroll(function() {
+            if (jQuery(this).scrollTop() > offset) {
+                jQuery('.back-to-top').fadeIn(duration);
+            } else {
+                jQuery('.back-to-top').fadeOut(duration);
+            }
+        });
+        
+        jQuery('.back-to-top').click(function(event) {
+            event.preventDefault();
+            jQuery('html, body').animate({scrollTop: 0}, duration);
+            return false;
+        })
+    });
+</script>
+{% endblock %}

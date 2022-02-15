@@ -1,0 +1,8 @@
+==============================================================
+        ASPECT TERM EXTRACTION PERFORMANCE EVALUATION
+==============================================================
+Accuracy:  0.8258
+Precision: 0.8941
+Recall:    0.8258
+F1-score:  0.8496
+PS C:\Thesis\classifier> 
