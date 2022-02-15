@@ -2,4 +2,6 @@ django
 gunicorn
 django-heroku
 nltk
+numpy
+pandas
 
