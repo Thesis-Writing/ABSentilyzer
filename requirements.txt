@@ -8,3 +8,4 @@ deep_translator
 symspellpy
 sklearn
 scipy
+tkinter

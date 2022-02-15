@@ -356,63 +356,9 @@ def get_user_input(user_input=None):
 
   '''
   import pandas as pd
-  import tkinter as tk
-  from tkinter import filedialog
-  
-  if not user_input or user_input == None:
-    try:
-      root = tk.Tk()
-      root.withdraw()
-      
-      # Prompt user to choose file
-      file_path = filedialog.askopenfilename()
-      file_name = os.path.basename(file_path)
-
-      # Make sure that the chosen file is a csv
-      if file_path.lower().endswith('.csv'):
-        print("You've chosen {}".format(file_name))
-        dataframe = pd.read_csv(file_path)
-        
-        columns = [col for col in dataframe.columns]
-        print("CSV Columns:")
-        for i in range(len(columns)):
-          print("({}) {}".format(i+1, columns[i]))
-        
-        col_number = input("Enter the number of column you want to classify: ")
-        if int(col_number)-1 > len(columns) or int(col_number)-1 < 0:
-          print(col_number)
-          print(len(columns))
-          print("Invalid column number")
-        else:
-          chosen_col = columns[int(col_number)-1]
-          test_data = dataframe[chosen_col].tolist()
-          preprocessed_user_input = []
-          if len(test_data) > 500:
-            print("Classifying tweets greater than 500 might "
-                  "take a hour more or less")
-            answer = input("Do you want to proceed? (Y/N): ")
-            if answer == 'Y' or answer == 'y':
-              print("Detected {} tweets for" 
-                    "classification".format(len(test_data)))
-              print("Preprocessing tweets, this might take some time...")
-              preprocessed_user_input = preprocessing.preprocess(test_data)
-              return preprocessed_user_input
-            else:
-              print("Terminating program...")
-              return user_input,preprocessed_user_input
-          else:
-            print("Detected {} tweets for" 
-                  "classification".format(len(test_data)))
-            print("Preprocessing tweets, this might take some time...")
-            preprocessed_user_input = preprocessing.preprocess(test_data)
-            return test_data,preprocessed_user_input
-    except Exception as e:
-      print("Exception: {}".format(e))
-      print("Invalid CSV format, please choose a valid CSV file.")
-  else:
-    test_data = user_input
-    preprocessed_user_input = preprocessing.preprocess(test_data)
-    return test_data,preprocessed_user_input
+  test_data = user_input
+  preprocessed_user_input = preprocessing.preprocess(test_data)
+  return test_data,preprocessed_user_input
 
 def get_lexicon():
   '''
