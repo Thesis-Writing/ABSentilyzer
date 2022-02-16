@@ -405,7 +405,7 @@ class AspectTermExtraction:
     opinion_aspect_dict_list = []
     dependency_list = []
 
-    # self.run_stanford_server()
+    self.run_stanford_server()
     print("\nEXTRACTING ASPECTS ...")
 
     for text in tqdm(self.preprocessed_text_list):
