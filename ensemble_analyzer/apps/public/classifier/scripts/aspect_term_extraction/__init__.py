@@ -91,7 +91,7 @@ class AspectTermExtraction:
     
     dependencies = []
 
-    parser = CoreNLPDependencyParser(url='http://localhost:9010')
+    parser = CoreNLPDependencyParser(url='http://localhost:8000')
 
     if isinstance(text, str):
       try:
@@ -405,7 +405,7 @@ class AspectTermExtraction:
     opinion_aspect_dict_list = []
     dependency_list = []
 
-    self.run_stanford_server()
+    # self.run_stanford_server()
     print("\nEXTRACTING ASPECTS ...")
 
     for text in tqdm(self.preprocessed_text_list):
