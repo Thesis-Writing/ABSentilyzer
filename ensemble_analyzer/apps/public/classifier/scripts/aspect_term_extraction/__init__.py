@@ -58,7 +58,7 @@ class AspectTermExtraction:
     
     '''
     
-    command = ('java -mx1g -cp "*" ' 
+    command = ('java -cp "*" -mx1g' 
               'edu.stanford.nlp.pipeline.StanfordCoreNLPServer ' 
               '-port 8000 -timeout 15000 -quiet')
     try:
