@@ -11,12 +11,12 @@ cwd = os.getcwd()
 
 try:
     path = os.path.join(cwd, 'ensemble_analyzer/apps/public/stanford-corenlp-4.3.1')
-    subprocess.Popen('java -mx1g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 8000 -timeout 15000', cwd=path, shell =True, stdout=subprocess.PIPE)
+    subprocess.Popen('java -mx1g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 8000 -timeout 15000 -quiet', cwd=path, shell =True, stdout=subprocess.PIPE)
     print("From manage.py: {}".format(cwd))
     print("From manage.py: {}".format(path))
 except:
     path = os.path.join(cwd, 'ensemble_analyzer/apps/public/stanford-corenlp-4.3.2')
-    subprocess.Popen('java -mx1g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 8000 -timeout 15000', cwd=path, shell =True, stdout=subprocess.PIPE)
+    subprocess.Popen('java -mx1g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 8000 -timeout 15000 -quiet', cwd=path, shell =True, stdout=subprocess.PIPE)
 
 PARSER = CoreNLPDependencyParser(url='http://localhost:8000')
 

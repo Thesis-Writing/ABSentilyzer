@@ -58,7 +58,7 @@ class AspectTermExtraction:
     
     '''
     
-    command = ('java -cp "*" -mx1g' 
+    command = ('java -mx1g -cp "*" ' 
               'edu.stanford.nlp.pipeline.StanfordCoreNLPServer ' 
               '-port 8000 -timeout 15000 -quiet')
     try:
@@ -104,7 +104,7 @@ class AspectTermExtraction:
         dependency = result.__next__()
         dependencies = list(dependency.triples())
       except:
-        print(text)
+        print("No parser! Text: {}".format(text))
     elif text:
       text = ' '.join(text)
       text = text.lower()
@@ -113,7 +113,7 @@ class AspectTermExtraction:
         dependency = result.__next__()
         dependencies = list(dependency.triples())
       except:
-        print(text)
+        print("No parser! Text: {}".format(text))
 
     return dependencies
 
