@@ -92,6 +92,8 @@ class AspectTermExtraction:
     dependencies = []
 
     parser = CoreNLPDependencyParser(url='http://localhost:8000')
+    if parser:
+      print("True")
 
     if isinstance(text, str):
       try:
