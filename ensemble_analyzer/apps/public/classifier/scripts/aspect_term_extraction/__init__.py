@@ -58,7 +58,7 @@ class AspectTermExtraction:
     
     '''
     
-    command = ('java -mx1g -cp "/app/ensemble_analyzer/apps/public/stanford-corenlp-4.3.1" ' 
+    command = ('java -mx1g -cp "app/ensemble_analyzer/apps/public/stanford-corenlp-4.3.1" ' 
               'edu.stanford.nlp.pipeline.StanfordCoreNLPServer ' 
               '-port 8000 -timeout 15000 -quiet')
     # try:
