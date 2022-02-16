@@ -58,7 +58,7 @@ class AspectTermExtraction:
     
     '''
     
-    command = ('java -mx1g -cp "*" ' 
+    command = ('java -mx1g -cp "app/ensemble_analyzer/apps/public/stanford-corenlp-4.3.1" ' 
               'edu.stanford.nlp.pipeline.StanfordCoreNLPServer ' 
               '-port 8000 -timeout 15000 -quiet')
     try:
@@ -66,8 +66,7 @@ class AspectTermExtraction:
     except:
       parser_path = os.path.join(CWD, 'ensemble_analyzer/apps/public/stanford-corenlp-4.3.2')
     
-    subprocess.Popen(command, cwd=parser_path, 
-                    shell =True, stdout=subprocess.PIPE)
+    subprocess.Popen(command, shell =True, stdout=subprocess.PIPE)
     
     print("From ate.py: {}".format(cwd))
     print("From ate.py: {}".format(parser_path))
@@ -92,10 +91,6 @@ class AspectTermExtraction:
     dependencies = []
 
     parser = CoreNLPDependencyParser(url='http://localhost:8000')
-    if parser:
-      print("True")
-    else:
-      print("False")
 
     if isinstance(text, str):
       try:
