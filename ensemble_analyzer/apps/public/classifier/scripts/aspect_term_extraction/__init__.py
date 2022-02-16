@@ -69,8 +69,8 @@ class AspectTermExtraction:
     subprocess.Popen(command, cwd=parser_path, 
                     shell =True, stdout=subprocess.PIPE)
     
-    print(cwd)
-    print(parser_path)
+    print("From ate.py: ".format(cwd))
+    print("From ate.py: ".format(parser_path))
 
     sleep_duration = 2
     time.sleep(sleep_duration)
@@ -94,6 +94,8 @@ class AspectTermExtraction:
     parser = CoreNLPDependencyParser(url='http://localhost:8000')
     if parser:
       print("True")
+    else:
+      print("False")
 
     if isinstance(text, str):
       try:
