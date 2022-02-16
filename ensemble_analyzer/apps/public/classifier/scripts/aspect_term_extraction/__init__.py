@@ -62,9 +62,9 @@ class AspectTermExtraction:
               'edu.stanford.nlp.pipeline.StanfordCoreNLPServer ' 
               '-port 8000 -timeout 15000 -quiet')
     try:
-      parser_path = '../app/ensemble_analyzer/apps/public/stanford-corenlp-4.3.1'
+      parser_path = os.path.join(CWD, 'ensemble_analyzer/apps/public/stanford-corenlp-4.3.1')
     except:
-      parser_path = '../app/ensemble_analyzer/apps/public/stanford-corenlp-4.3.2'
+      parser_path = os.path.join(CWD, 'ensemble_analyzer/apps/public/stanford-corenlp-4.3.2')
     
     subprocess.Popen(command, cwd=parser_path, 
                     shell =True, stdout=subprocess.PIPE)
