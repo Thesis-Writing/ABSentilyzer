@@ -58,15 +58,16 @@ class AspectTermExtraction:
     
     '''
     
-    command = ('java -mx1g -cp "app/ensemble_analyzer/apps/public/stanford-corenlp-4.3.1" ' 
+    command = ('java -mx1g -cp "*" ' 
               'edu.stanford.nlp.pipeline.StanfordCoreNLPServer ' 
               '-port 8000 -timeout 15000 -quiet')
     try:
-      parser_path = os.path.join(CWD, 'ensemble_analyzer/apps/public/stanford-corenlp-4.3.1')
+      parser_path = '../app/ensemble_analyzer/apps/public/stanford-corenlp-4.3.1'
     except:
-      parser_path = os.path.join(CWD, 'ensemble_analyzer/apps/public/stanford-corenlp-4.3.2')
+      parser_path = 'app/ensemble_analyzer/apps/public/stanford-corenlp-4.3.2'
     
-    subprocess.Popen(command, shell =True, stdout=subprocess.PIPE)
+    subprocess.Popen(command, cwd=parser_path, 
+                    shell =True, stdout=subprocess.PIPE)
     
     print("From ate.py: {}".format(cwd))
     print("From ate.py: {}".format(parser_path))
