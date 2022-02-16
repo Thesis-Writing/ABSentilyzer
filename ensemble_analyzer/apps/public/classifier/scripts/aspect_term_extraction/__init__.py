@@ -60,7 +60,7 @@ class AspectTermExtraction:
     
     command = ('java -mx1g -cp "*" ' 
               'edu.stanford.nlp.pipeline.StanfordCoreNLPServer ' 
-              '-port 9010 -timeout 15000 -quiet')
+              '-port 8000 -timeout 15000 -quiet')
     try:
       parser_path = os.path.join(CWD, 'ensemble_analyzer/apps/public/stanford-corenlp-4.3.1')
     except:
@@ -68,6 +68,9 @@ class AspectTermExtraction:
     
     subprocess.Popen(command, cwd=parser_path, 
                     shell =True, stdout=subprocess.PIPE)
+    
+    print(cwd)
+    print(parser_path)
 
     sleep_duration = 2
     time.sleep(sleep_duration)
