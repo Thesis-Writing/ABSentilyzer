@@ -69,8 +69,8 @@ class AspectTermExtraction:
     subprocess.Popen(command, cwd=parser_path, 
                     shell =True, stdout=subprocess.PIPE)
     
-    print("From ate.py: ".format(cwd))
-    print("From ate.py: ".format(parser_path))
+    print("From ate.py: {}".format(cwd))
+    print("From ate.py: {}".format(parser_path))
 
     sleep_duration = 2
     time.sleep(sleep_duration)
