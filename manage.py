@@ -11,6 +11,8 @@ cwd = os.getcwd()
 
 try:
     path = os.path.join(cwd, 'ensemble_analyzer/apps/public/stanford-corenlp-4.3.1')
+    print(cwd)
+    print(path)
     subprocess.Popen('java -mx1g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer -port 8000 -timeout 15000', cwd=path, shell =True, stdout=subprocess.PIPE)
 except:
     path = os.path.join(cwd, 'ensemble_analyzer/apps/public/stanford-corenlp-4.3.2')
