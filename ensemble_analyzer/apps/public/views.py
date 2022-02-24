@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 '''
     This module interacts with the backend by taking a request and by returning a response.
 '''
@@ -16,7 +18,8 @@
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
 from .forms import InputForm
-from ensemble_analyzer.apps.public.classifier.implement import main
+from ensemble_analyzer.apps.public.absentilyzer import ABSentilyzer
+
 from pandas import *
 import os
 
@@ -56,9 +59,19 @@ def index(request: HttpRequest) -> HttpResponse:
                         context['form'] = form
 
                         # outCSV must be a list
-                        main_table_dict,preprocessed_table_dict,final_sentence_polarity_table_dict = main(included_col)
+                        analyzer = ABSentilyzer(included_col)
+                        analyzer.process_input()
+                        
+                        (main_table_dict,
+                            preprocessed_table_dict,
+                            final_sentence_polarity_table_dict) = analyzer.get_tables()
 
-                        return render(request, "index.html", {'form': form, 'main_table_dict': main_table_dict, 'preprocessed_table_dict': preprocessed_table_dict, 'final_sentence_polarity_table_dict': final_sentence_polarity_table_dict,'csv_allowed':'yes'})
+                        return render(request, "index.html", 
+                                    {'form': form, 
+                                        'main_table_dict': main_table_dict, 
+                                        'preprocessed_table_dict': preprocessed_table_dict, 
+                                        'final_sentence_polarity_table_dict': final_sentence_polarity_table_dict,
+                                        'csv_allowed':'yes'})
 
                     # else if row is greater than 500, raise csv_rowError validation then reload page
                     else:
@@ -82,9 +95,19 @@ def index(request: HttpRequest) -> HttpResponse:
                 context['preprocessed_table_dict'] = preprocessed_table_dict
                 context['final_sentence_polarity_table_dict'] = final_sentence_polarity_table_dict
 
-                main_table_dict,preprocessed_table_dict,final_sentence_polarity_table_dict = main(user_input)                
+                analyzer = ABSentilyzer(user_input)
+                analyzer.process_input()
+
+                (main_table_dict,
+                    preprocessed_table_dict,
+                    final_sentence_polarity_table_dict) = analyzer.get_tables()
                 
-                return render(request, "index.html", {'form': form, 'main_table_dict': main_table_dict, 'preprocessed_table_dict': preprocessed_table_dict, 'final_sentence_polarity_table_dict': final_sentence_polarity_table_dict,'text_allowed':'yes'})
+                return render(request, "index.html", 
+                            {'form': form, 
+                            'main_table_dict': main_table_dict,
+                            'preprocessed_table_dict': preprocessed_table_dict,
+                            'final_sentence_polarity_table_dict': final_sentence_polarity_table_dict,
+                            'text_allowed':'yes'})
 
         # else if there is no input, raise no_input validation then reload page
         else:

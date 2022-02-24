@@ -19,7 +19,36 @@
         <h5 class="masthead-heading text-uppercase mb-0">ABOUT US</h5>
         <!-- Masthead Subheading-->
         <p class="masthead-subheading font-weight-light mb-0">Get to know the authors of the Aspect Based Sentiment Analyzer</p>
-        <a class="btn btn-primary text-uppercase mt-3" id="getStarted" href="#steps">Proceed</a>
+        <a class="btn btn-primary text-uppercase mt-3" id="getStarted" style="cursor: pointer; color: white;" data-bs-toggle="modal" data-bs-target="#aboutUsModal">Proceed</a>
     </div>
 </header>
+
+<!-- About Us Modal-->
+<div class="portfolio-modal modal fade" id="aboutUsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="padding:25px">
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="align-self: end; font-size: 1rem;"></button>
+            <div class="container">
+                <div class="text-center">
+                    <h2 class="section-heading text-uppercase">Welcome to AB Sentilyzer!</h2>
+                    <p class="section-subheading text-muted">an Aspect-based Sentiment Analyzer tool developed for text analytics with the use of Machine Learning and Natural Language Processing.</p>
+                </div>
+                <div class="mt-3 mb-4">
+                    <p class="masthead-subheading font-weight-light mb-0" style="text-align: justify;">
+                        AB Sentilyzer is a simple automated tool that allows users to determine 
+                        the sentiment expressed in an input/s with more granular results. It focuses 
+                        on Sentiment Analysis and its potential growth in the future as an opportunity
+                        to discover more methods to improve the service it provides.
+                    </p>
+                    <br>
+                    <p class="masthead-subheading font-weight-light mb-0" style="text-align: justify;">
+                        AB Sentilyzer is developed by the students of Polytechnic 
+                        University of the Philippines, Manila under the Department 
+                        of Computer Science, 2018-2022.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
