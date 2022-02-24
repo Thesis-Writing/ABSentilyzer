@@ -1,15 +1,22 @@
 '''
-  This module is intended for the computation of the final aspect polarity of the sentence
+  This module is intended for the computation of the final aspect polarity of the tweet
   from the polarities of the aspect terms
 '''
 
 # Author            : Afrahly Afable
-# Calling Sequence  : get_final_polarities(test_aspect_list,pos_ensemble_prob_list,neg_ensemble_prob_list,neu_ensemble_prob_list)
-#                     get_aspect_final_polarity(pos_prob,neg_prob,neu_prob)
-#                     get_sentence_polarity(final_aspect_polarity_list)
+# Calling Sequence  : get_final_polarities(test_aspect_list,
+#                       pos_ensemble_prob_list,
+#                       neg_ensemble_prob_list,
+#                       neu_ensemble_prob_list)
+#                     get_aspect_final_polarity(pos_prob, neg_prob, neu_prob)
+#                     get_senti_scores(pos_ensemble_prob_list, 
+#                                     neg_ensemble_prob_list, 
+#                                     neu_ensemble_prob_list)
+#                       > get_score(prob_list)
+#                     get_sentence_polarity(senti_score_list)
 # Date Written      : December 1, 2021
 # Date Revised      : December 27, 2021
-# Purpose           : Compute for the final aspect term polarity
+# Purpose           : Compute for the final aspect term polarity and final tweet polarity
 
 def get_aspect_polarity(test_aspect_list, pos_ensemble_prob_list, 
                         neg_ensemble_prob_list, neu_ensemble_prob_list):
@@ -92,7 +99,22 @@ def get_aspect_final_polarity(pos_prob, neg_prob, neu_prob):
   return final_polarity
 
 def get_senti_scores(pos_ensemble_prob_list, neg_ensemble_prob_list,
-                              neu_ensemble_prob_list):
+                    neu_ensemble_prob_list):
+  '''
+    This function returns the sentiment scores of the tweet
+    by weighing the probabilities of the aspect terms in each
+    polarity
+    
+    Data Structures
+      ---------------
+      Input:
+        - pos_ensemble_prob_list : LIST 
+        - neg_ensemble_prob_list : LIST
+        - neu_ensemble_prob_list : LIST
+      Returns:
+        - senti_score_list  : LIST
+  '''
+  
   senti_score_list = []
   
   for i in range(len(pos_ensemble_prob_list)):
@@ -112,6 +134,8 @@ def get_senti_scores(pos_ensemble_prob_list, neg_ensemble_prob_list,
   return senti_score_list
 
 def get_score(prob_list):
+  # Weigh score from probability
+  
   score = 0.0
   temp_score = 0.0
 

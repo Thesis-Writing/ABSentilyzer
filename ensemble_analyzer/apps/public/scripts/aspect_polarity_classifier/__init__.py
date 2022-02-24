@@ -8,6 +8,13 @@
 #                                 test_text_list=None,test_aspect_dict_list=None,
 #                                 test_aspect_list=None,polarity="pos"or"neg"or"neu",
 #                                 mode="test"or"impelement")
+#                        > classify()
+#                          > get_data_model()
+#                            > preprare_data_model()
+#                            > get_extra_features()
+#                          > train_test_mnb()
+#                          > train_test_svm()
+#                        > classify_sentence()
 # Date Written      : December 1, 2021
 # Date Revised      : December 27, 2021
 # Purpose           : Classify aspect term polarity
@@ -37,10 +44,10 @@ from scipy.sparse import hstack
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from .ensemble import ensemble
 from ensemble_analyzer.apps.public.scripts.utils import *
 from ensemble_analyzer.apps.public.scripts.metrics import *
 from ensemble_analyzer.apps.public.scripts.display import *
-from .ensemble import ensemble
 from ensemble_analyzer.apps.public.models.mnb import MultinomialNB
 from ensemble_analyzer.apps.public.models.ovr import OneVsRestClassifier
 
@@ -239,6 +246,7 @@ class Classifier:
     y_test = data_test.drop('tweets',1)
     y_test = np.array(y_test, dtype=np.int64)
 
+    # Perform feature extraction
     tfidf = TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', 
                             lowercase=False, max_features=5000, 
                             ngram_range=(1,4))

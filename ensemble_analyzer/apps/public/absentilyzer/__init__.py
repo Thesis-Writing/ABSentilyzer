@@ -1,3 +1,38 @@
+'''
+  This class is intended for the processes used in the aspect-based sentiment analysis
+  An instance of the class is created in views.py with the user input as parameter
+  The get_tables() function returns the dictionaries used to display the contents
+  in the frontend tables
+'''
+
+# Author            : Afrahly Afable
+# Calling Sequence  : Main class called in views.py
+#                     ABSentilyzer(user_input)
+#                       > process_input()
+#                         > get_train_data()
+#                         > preprocess_input()
+#                         > extract_aspect()
+#                           > display_ate_output()
+#                         > classify_aspect_pol()
+#                           > remove_no_aspect_tweet()
+#                           > classify_aspect()
+#                         > aggregate_aspect_pol()
+#                         > get_tweet_pol()
+#                       > get_tables()
+#                         > get_main_table_dict()
+#                         > get_prep_table_dict()
+#                         > get_tweet_pol_table_dict()
+#                         > get_runtime()
+# Date Written      : December 1, 2021
+# Date Revised      : February 20, 2021
+# Purpose           : To perform aspect-based sentiment analysis on the user input
+# Data Structures   : Input Variable/s:
+#                       - user_input              : LIST
+#                     Output Variable/s:
+#                       - main_table_dict_list    : DICTIONARY
+#                       - preprocessed_table_dict : DICTIONARY
+#                       - tweet_pol_table_dict    : DICTIONARY
+
 import warnings
 import pickle
 import time
@@ -5,9 +40,9 @@ import os
 
 from ensemble_analyzer.apps.public.scripts.utils import *
 from ensemble_analyzer.apps.public.scripts.display import *
-from ensemble_analyzer.apps.public.scripts.preprocessing import preprocess
 from ensemble_analyzer.apps.public.scripts.validation import check_tweet
-from ensemble_analyzer.apps.public.scripts.final_aspect_polarity import *
+from ensemble_analyzer.apps.public.scripts.polarity_calculation import *
+from ensemble_analyzer.apps.public.scripts.preprocessing import preprocess
 from ensemble_analyzer.apps.public.scripts.aspect_polarity_classifier import Classifier
 from ensemble_analyzer.apps.public.scripts.aspect_term_extraction import AspectTermExtraction
 
@@ -94,6 +129,17 @@ class ABSentilyzer():
                                             self.test_aspect_list)
 
   def classify_aspect(self, polarity, mode):
+    '''
+      Classify aspect polarity in the mode
+      polarity can be pos, neg, or neu
+      mode can be implement or test
+
+      Data structures
+      ---------------
+      Input Parameters:
+        polarity  : STRING
+        mode      : STRING
+    '''
     classifier = Classifier(self.preprocessed_train_text_list, 
                             self.train_aspect_dict_list,
                             self.preprocessed_test_text_list, 
