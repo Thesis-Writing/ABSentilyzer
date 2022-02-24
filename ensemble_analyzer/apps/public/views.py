@@ -4,7 +4,9 @@
     This module interacts with the backend by taking a request and by returning a response.
 '''
 
-# Author            : Group 4
+# Author            : Keith Barrientos
+#                     Afrahly Afable
+#                     John Edrick Allas
 # Calling Sequence  : index(request: HttpRequest) -> HttpResponse
 #                     home(request: HttpRequest) -> HttpResponse
 #                     how(request: HttpRequest) -> HttpResponse
