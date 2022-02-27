@@ -161,6 +161,7 @@ class ABSentilyzer():
 
   def aggregate_aspect_pol(self):
     self.aspect_pol_list = get_aspect_polarity(self.test_aspect_list,
+                                              self.test_aspect_dict_list,
                                               self.pos_ensemble_prob_list,
                                               self.neg_ensemble_prob_list,
                                               self.neu_ensemble_prob_list)
@@ -170,7 +171,8 @@ class ABSentilyzer():
     self.senti_score_list = get_senti_scores(self.pos_ensemble_prob_list,
                                             self.neg_ensemble_prob_list,
                                             self.neu_ensemble_prob_list)
-    self.absa_label_list = get_sentence_polarity(self.senti_score_list)
+    self.absa_label_list = get_sentence_polarity(self.test_aspect_dict_list,
+                                                self.senti_score_list)
 
   def get_main_table_dict(self):
     self.main_table_dict_list = display_output(self.pos_ensemble_prob_list,

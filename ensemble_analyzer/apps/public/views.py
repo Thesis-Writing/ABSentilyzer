@@ -42,8 +42,12 @@ def index(request: HttpRequest) -> HttpResponse:
                 ext = os.path.splitext(outCSV.name)[1] # returns path+filename
                 valid_filetype = ['.csv']
                 if ext.lower() in valid_filetype:
-                    #read uploaded csv
-                    data = read_csv(outCSV)
+                    try:
+                        #read uploaded csv
+                        data = read_csv(outCSV)
+                    except:
+                        #read uploaded csv
+                        data = read_csv(outCSV, encoding='cp1252')
 
                     # the system has a note that the column the user wants to classify must be renamed as "input"
                     # convert "input column into list"
