@@ -328,6 +328,8 @@ class AspectTermExtraction:
             term_index = aspect_list.index(term)
             aspect_list.pop(term_index)
             opinion_aspect_dict_list.pop(term_index)
+    
+    aspect_list = list(dict.fromkeys(aspect_list))
 
     return (aspect_list, opinion_aspect_dict_list)
 
