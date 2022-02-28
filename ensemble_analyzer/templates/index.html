@@ -61,6 +61,7 @@
                                 <th class="sticky-top" width="50%" scope="col" style="vertical-align: text-top;">Original Input</th>
                                 <th class="sticky-top" scope="col" style="vertical-align: text-top;">Extracted Aspects</th>
                                 <th class="sticky-top" scope="col" style="vertical-align: text-top;">Aspect Polarity/ies</th>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Sentence Polarity</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,6 +78,19 @@
                                             {{x}}<br>
                                         {%endfor%} 
                                     </td>
+                                    {% if values.3 == 'pos' %}
+                                        {% with name="positive" %}
+                                        <td style="text-align: center"> {{ name }} </td>
+                                        {% endwith %}
+                                    {% elif values.3 == 'neg' %}
+                                        {% with name="negative" %}
+                                        <td style="text-align: center"> {{ name }} </td>
+                                        {% endwith %}
+                                    {% elif values.3 == 'neu' %}
+                                        {% with name="neutral" %}
+                                        <td style="text-align: center"> {{ name }} </td>
+                                        {% endwith %}
+                                    {% endif %}
                                 </tr>
                             {%endfor%}
                         </tbody>
@@ -85,7 +99,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col">
             <div class="table-responsive py-5" id="tables">
                 <h6>Sentence Polarity</h6>
@@ -122,7 +136,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <br>
     </div>
 
@@ -269,6 +283,7 @@
                                     <th class="sticky-top" width="50%" scope="col" style="vertical-align: text-top;">Original Input</th>
                                     <th class="sticky-top" scope="col" style="vertical-align: text-top;">Extracted Aspects</th>
                                     <th class="sticky-top" scope="col" style="vertical-align: text-top;">Aspect Polarity/ies</th>
+                                    <th class="sticky-top" scope="col" style="vertical-align: text-top;">Sentence Polarity</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -285,6 +300,19 @@
                                                     {{x}}<br>
                                                 {%endfor%} 
                                             </td>
+                                            {% if values.3 == 'pos' %}
+                                                {% with name="positive" %}
+                                                <td style="text-align: center"> {{ name }} </td>
+                                                {% endwith %}
+                                            {% elif values.3 == 'neg' %}
+                                                {% with name="negative" %}
+                                                <td style="text-align: center"> {{ name }} </td>
+                                                {% endwith %}
+                                            {% elif values.3 == 'neu' %}
+                                                {% with name="neutral" %}
+                                                <td style="text-align: center"> {{ name }} </td>
+                                                {% endwith %}
+                                            {% endif %}
                                     </tr>
                                 {%endfor%}
                             </tbody>

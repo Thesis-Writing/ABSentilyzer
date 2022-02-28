@@ -151,6 +151,7 @@ def display_output(pos_ensemble_prob_list, neg_ensemble_prob_list,
     table_row.append(original_input)
     table_row.append(input_aspects)
     table_row.append(aspect_polarities)
+    table_row.append(absa_polarity)
     main_table_dict_list[i+1] = table_row
     
   print("==============================================================")
@@ -305,20 +306,20 @@ def display_ate_output_implement(ate_orig_text_list, ate_prep_text_list,
     print(f"Opinion-Dict: {format_display(str(opinion_aspect_dict_list[i]))}")
     print("\n")
 
-def get_prep_table(original_input_list,preprocessed_input_list):
-  preprocessed_table_dict = {}
+# def get_prep_table(original_input_list,preprocessed_input_list):
+#   preprocessed_table_dict = {}
     
-  for i in range(len(preprocessed_input_list)):
-    table_row = []
+#   for i in range(len(preprocessed_input_list)):
+#     table_row = []
     
-    original_input = original_input_list[i]
-    preprocessed_input = preprocessed_input_list[i]
+#     original_input = original_input_list[i]
+#     preprocessed_input = preprocessed_input_list[i]
 
-    table_row.append(original_input)
-    table_row.append(preprocessed_input)
-    preprocessed_table_dict[i+1] = table_row
+#     table_row.append(original_input)
+#     table_row.append(preprocessed_input)
+#     preprocessed_table_dict[i+1] = table_row
       
-  return preprocessed_table_dict
+#   return preprocessed_table_dict
 
 def get_tweet_pol(original_input_list,final_polarity_list):
   final_sentence_polarity_table_dict = {}

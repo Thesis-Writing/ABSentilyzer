@@ -60,7 +60,6 @@ def index(request: HttpRequest) -> HttpResponse:
                     if check_rows <= 499:
                         # proceed to backend
                         main_table_dict = {}
-                        preprocessed_table_dict = {}
                         final_sentence_polarity_table_dict = {}
                         context['form'] = form
 
@@ -69,7 +68,6 @@ def index(request: HttpRequest) -> HttpResponse:
                         analyzer.process_input()
                         
                         (main_table_dict,
-                            preprocessed_table_dict,
                             final_sentence_polarity_table_dict) = analyzer.get_tables()
                         
                         aspect_dict = get_most_common_aspect(main_table_dict);
@@ -85,8 +83,6 @@ def index(request: HttpRequest) -> HttpResponse:
                         return render(request, "index.html", 
                                     {'form': form, 
                                         'main_table_dict': main_table_dict, 
-                                        'preprocessed_table_dict': preprocessed_table_dict, 
-                                        'final_sentence_polarity_table_dict': final_sentence_polarity_table_dict,
                                         'aspect_dict': aspect_dict,
                                         'has_most_common': has_most_common,
                                         'sentiment_count_dict': sentiment_count_dict,
@@ -104,28 +100,21 @@ def index(request: HttpRequest) -> HttpResponse:
 
             elif outText:
                 main_table_dict = {}
-                preprocessed_table_dict = {}
                 final_sentence_polarity_table_dict = {}
                 user_input = []
                 user_input.append(outText)
                 
                 context['form'] = form
                 context['main_table_dict'] = main_table_dict
-                context['preprocessed_table_dict'] = preprocessed_table_dict
-                context['final_sentence_polarity_table_dict'] = final_sentence_polarity_table_dict
 
                 analyzer = ABSentilyzer(user_input)
                 analyzer.process_input()
-
-                (main_table_dict,
-                    preprocessed_table_dict,
+                (main_table_dict, 
                     final_sentence_polarity_table_dict) = analyzer.get_tables()
                 
                 return render(request, "index.html", 
                             {'form': form, 
                             'main_table_dict': main_table_dict,
-                            'preprocessed_table_dict': preprocessed_table_dict,
-                            'final_sentence_polarity_table_dict': final_sentence_polarity_table_dict,
                             'text_allowed':'yes'})
 
         # else if there is no input, raise no_input validation then reload page
