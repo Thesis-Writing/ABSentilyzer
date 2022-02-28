@@ -385,8 +385,11 @@
     <script>
         var i = 0;
         function showProgressBar(total_interval){
+            console.log("Passed interval:");
+            console.log(total_interval);
             document.getElementById("progressbar").style.display = 'block';
             if (i == 0) {
+                console.log(total_interval);
                 i = 1;
                 var element = document.getElementById("bar");
                 var width = 1;
@@ -468,32 +471,37 @@
                     var file = evt.target.files[0];
                     if (file) {
                         var read = new FileReader();
+                        var self = this;
                         read.onload = function(e){
                             var contents = e.target.result;
-                            console.log(contents);
                             var lines = contents.split("\n");
-                            console.log(lines);
-                            const length = lines.length;
+                            var length = (lines.length)-1; // do not include the header
+                            console.log("Length:");
                             console.log(length);
+
+                            var prep_interval = length * 1.5;
+                            console.log("prep_interval :" + prep_interval.toString());
+                            var ate_interval = length * 0.5;
+                            console.log("ate_interval: " + prep_interval.toString());
+                            var pos_interval = length * 1;
+                            console.log("pos_interval: " + pos_interval.toString());
+                            var neg_interval = length * 1;
+                            console.log("neg_interval: " + neg_interval.toString());
+                            var neu_interval = length * 1;
+                            console.log("neu_interval: " + neu_interval.toString());
+                            var total_interval = prep_interval + ate_interval + pos_interval + neg_interval + neu_interval;
+                            console.log("Total Interval:");
+                            console.log(total_interval);
+
+                            showProgressBar(total_interval);
                         }
                         read.readAsText(file);
-                        computeInterval(length);
                     } else {
                         alert("Failed to load file! Check if the file type is correct.");
                     }
                 });
             }
             document.getElementById('FileUploadCSV').addEventListener('change', previewCSV);
-
-            function computeInterval(length) {
-                const prep_interval = length * 1.5;
-                const ate_interval = length * 0.5;
-                const pos_interval = length * 1.5;
-                const neg_interval = length * 1.5;
-                const neu_interval = length * 1.5;
-                const total_interval = prep_interval + ate_interval + pos_interval + neg_interval + neu_interval;
-                showProgressBar(total_interval);
-            }
         </script>
 
     </div>
