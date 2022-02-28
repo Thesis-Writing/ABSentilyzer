@@ -79,14 +79,15 @@ def index(request: HttpRequest) -> HttpResponse:
                         
                         sentiment_count_dict = get_sentiment_count(final_sentence_polarity_table_dict)
                         
-
+                        print(check_rows)
                         return render(request, "index.html", 
                                     {'form': form, 
                                         'main_table_dict': main_table_dict, 
                                         'aspect_dict': aspect_dict,
                                         'has_most_common': has_most_common,
                                         'sentiment_count_dict': sentiment_count_dict,
-                                        'csv_allowed':'yes'})
+                                        'csv_allowed':'yes',
+                                        'row_length':check_rows})
 
                     # else if row is greater than 500, raise csv_rowError validation then reload page
                     else:
