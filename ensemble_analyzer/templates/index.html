@@ -33,7 +33,7 @@
             <div class="btn-toolbar">
                 <button type="button" class="btn btn-primary btn-sm" id="csvModal" data-bs-toggle="modal" data-bs-target="#exampleModal">Upload CSV</button>
                 <p class="px-2">or</p>
-                <button type="submit" id="btnClassify" class="btn btn-primary btn-sm" onclick="show(loader)">Classify</button>
+                <button type="submit" id="btnClassifyText" class="btn btn-primary btn-sm" onclick="show(loader)">Classify</button>
             </div>
         </form>
     </div>
@@ -367,6 +367,8 @@
                 </div>
             </div>
         </div> -->
+    
+    
     </div>
     {% endif %}
     <!-- End of show charts scripts-->
@@ -382,13 +384,13 @@
     <!-- JS Code for Progress Bar -->
     <script>
         var i = 0;
-        function showProgressBar(){
+        function showProgressBar(total_interval){
             document.getElementById("progressbar").style.display = 'block';
             if (i == 0) {
                 i = 1;
                 var element = document.getElementById("bar");
                 var width = 1;
-                var id = setInterval(frame, "{{row_length}}");
+                var id = setInterval(frame, total_interval);
                 function frame() {
                 if (width >= 100) {
                     clearInterval(id);
@@ -401,27 +403,6 @@
                 }
             }
         }
-            
-        // var i = 0;
-        // function showProgressBar(){
-        //     document.getElementById("progressbar").style.display = 'block';
-        //     if (i == 0) {
-        //         i = 1;
-        //         var element = document.getElementById("bar");
-        //         var width = 1;
-        //         var id = setInterval(frame, 200);
-        //         function frame() {
-        //         if (width >= 100) {
-        //             clearInterval(id);
-        //             i = 0;
-        //         } else {
-        //             width++;
-        //             element.style.width = width + "%";
-        //             element.innerHTML = width  + "%";
-        //         }
-        //         }
-        //     } 
-        // }
     </script>
 
     <!-- JS Code for Scrollbar -->
@@ -452,7 +433,7 @@
                             <div class="btn-toolbar">
                                 <button id="preview" type="button" class="btn btn-primary btn-sm" style="height: 33px;">Preview</button>
                                 <p class="px-2">or</p>
-                                <button type="submit" id="btnClassify" data-bs-dismiss="modal" class="btn btn-primary btn-sm" onclick="showProgressBar()">Classify</button>
+                                <button type="submit" id="btnClassifyCSV" data-bs-dismiss="modal" class="btn btn-primary btn-sm">Classify</button>
                             </div>                        
                         </div>
                     </form>
@@ -483,8 +464,36 @@
                         alert("Failed to load file! Check if the file type is correct.");
                     }
                 });
+                document.getElementById('btnClassifyCSV').addEventListener("click", ()=>{
+                    var file = evt.target.files[0];
+                    if (file) {
+                        var read = new FileReader();
+                        read.onload = function(e){
+                            var contents = e.target.result;
+                            console.log(contents);
+                            var lines = contents.split("\n");
+                            console.log(lines);
+                            const length = lines.length;
+                            console.log(length);
+                        }
+                        read.readAsText(file);
+                        computeInterval(length);
+                    } else {
+                        alert("Failed to load file! Check if the file type is correct.");
+                    }
+                });
             }
             document.getElementById('FileUploadCSV').addEventListener('change', previewCSV);
+
+            function computeInterval(length) {
+                const prep_interval = length * 1.5;
+                const ate_interval = length * 0.5;
+                const pos_interval = length * 1.5;
+                const neg_interval = length * 1.5;
+                const neu_interval = length * 1.5;
+                const total_interval = prep_interval + ate_interval + pos_interval + neg_interval + neu_interval;
+                showProgressBar(total_interval);
+            }
         </script>
 
     </div>
