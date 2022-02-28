@@ -47,34 +47,9 @@
     </div>
     </div>
 
-    <!-- If inputted passed the requirements and has the right format, then continue -->
+    <!-- If the text inputted passed the requirements and has the right format, then continue -->
     {% if text_allowed == "yes" %}
     <div class="container">
-    <!-- <div class="row">
-        <div class="col">
-            <div class="table-responsive py-5" id="tables">
-                <h6>Preprocessing</h6>
-                <div style="table-layout: fixed;">
-                    <table class="table" id="table1">
-                        <thead class="table text-left" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
-                            <tr>
-                                <th class="sticky-top" width="50%" scope="col" style="vertical-align: text-top;">Original Input</th>
-                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Preprocessed Input</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for key,values in preprocessed_table_dict.items %}
-                                <tr>
-                                        <td style="text-align: left"> {{ values.0 }} </td>
-                                        <td style="text-align: left;"> {{ values.1 }} </td>
-                                </tr>
-                            {%endfor%}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div> -->
     <div class="row">
         <div class="col">
             <div class="table-responsive py-5" id="tables">
@@ -91,17 +66,17 @@
                         <tbody>
                             {% for key,values in main_table_dict.items %}
                                 <tr>
-                                        <td style="text-align: left"> {{ values.0 }} </td>
-                                        <td style="text-align: left;"> 
-                                            {% for v in values.1 %} 
-                                                {{v}}<br>
-                                            {%endfor%} 
-                                        </td>
-                                        <td style="text-align: left"> 
-                                            {% for x in values.2 %} 
-                                                {{x}}<br>
-                                            {%endfor%} 
-                                        </td>
+                                    <td style="text-align: left"> {{ values.0 }} </td>
+                                    <td style="text-align: left;"> 
+                                        {% for v in values.1 %} 
+                                            {{v}}<br>
+                                        {%endfor%} 
+                                    </td>
+                                    <td style="text-align: left"> 
+                                        {% for x in values.2 %} 
+                                            {{x}}<br>
+                                        {%endfor%} 
+                                    </td>
                                 </tr>
                             {%endfor%}
                         </tbody>
@@ -119,7 +94,7 @@
                         <thead class="table text-left" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
                             <tr>
                                 <th class="sticky-top" width="50%" scope="col" style="vertical-align: text-top;">Original Input</th>
-                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Sentence Polarity</th>
+                                <th class="sticky-top" scope="col" style="vertical-align: text-top; text-align: center;">Sentence Polarity</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,15 +103,15 @@
                                         <td style="text-align: left"> {{ values.0 }} </td>
                                         {% if values.1 == 'pos' %}
                                             {% with name="positive" %}
-                                            <td style="text-align: left"> {{ name }} </td>
+                                            <td style="text-align: center"> {{ name }} </td>
                                             {% endwith %}
                                         {% elif values.1 == 'neg' %}
                                             {% with name="negative" %}
-                                            <td style="text-align: left"> {{ name }} </td>
+                                            <td style="text-align: center"> {{ name }} </td>
                                             {% endwith %}
                                         {% elif values.1 == 'neu' %}
                                             {% with name="neutral" %}
-                                            <td style="text-align: left"> {{ name }} </td>
+                                            <td style="text-align: center"> {{ name }} </td>
                                             {% endwith %}
                                         {% endif %}
                                         
@@ -154,150 +129,138 @@
     <!-- If the file uploaded passed the requiremens and has the right format, then continue -->
     {% elif csv_allowed == "yes" %}
     <div class="container">
+        <!-- Show charts -->
         <div class="row">
-            <!-- <div class="col">
-                <div class="table-responsive py-5" id="tables">
-                    <h6>Preprocessing</h6>
-                    <div class="table-wrapper-scroll-y my-custom-scrollbar" style="table-layout: fixed;">
-                        <table class="table" id="table1">
-                            <thead class="table text-left" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
-                                <tr>
-                                    <th class="sticky-top" width="50%" scope="col" style="vertical-align: text-top;">Original Input</th>
-                                    <th class="sticky-top" scope="col" style="vertical-align: text-top;">Preprocessed Input</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for key,values in preprocessed_table_dict.items %}
-                                    <tr>
-                                            <td style="text-align: left"> {{ values.0 }} </td>
-                                            <td style="text-align: left;"> {{ values.1 }} </td>
-                                    </tr>
-                                {%endfor%}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div> -->
-                <!-- Show charts -->
-                <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-                    
-                <!-- Show most common aspects -->
-                {% if has_most_common == "True" %}
-                    <!-- Get aspect count array for bar chart -->
-                    <script>
-                        const aspect_count_dict = {};
-                    </script>
-                    {% for key, value in aspect_dict.items %}
-                        <script>
-                            var temp_key = '{{key}}';
-                            var temp_value = '{{value}}';
-                            aspect_count_dict[temp_key] = parseInt(temp_value);
-                        </script>
-                    {% endfor %}
-                    <script type="text/javascript">
-                        console.log(aspect_count_dict);
-                        const aspect_bar_arr = [];
-                        aspect_bar_arr.push(["Aspect", "Count", { role: "style" }]); // push header
-                        const bar_colors = ["#0d6efd",
-                                            "#6610f2",
-                                            "#6f42c1",
-                                            "#d63384",
-                                            "#dc3545",
-                                            "#fd7e14",
-                                            "#ffc107",
-                                            "#198754",
-                                            "#1abc9c",
-                                            "#0dcaf0"];
-                        let i = 0;
-                        for (const aspect_term of Object.keys(aspect_count_dict)) {
-                            if (i == 10) {
-                                break;
-                            } else {
-                                let temp_arr = [];
-                                temp_arr.push(aspect_term);
-                                temp_arr.push(aspect_count_dict[aspect_term]);
-                                temp_arr.push(bar_colors[i]);
-                                aspect_bar_arr.push(temp_arr);
-                                i = i + 1;
-                            }
-                        }
-                        console.log(aspect_bar_arr);
-
-                        google.charts.load("current", {packages:["corechart"]});
-                        google.charts.setOnLoadCallback(drawBarChart);
-
-                        function drawBarChart() {
-                            var data = google.visualization.arrayToDataTable(aspect_bar_arr);
-                            var view = new google.visualization.DataView(data);
-                            view.setColumns([0, 1,
-                                                { calc: "stringify",
-                                                sourceColumn: 1,
-                                                type: "string",
-                                                role: "annotation" },
-                                                2]);
-                            var options = {
-                                title: "First Ten Most Common Aspect",
-                                width: "100%",
-                                bar: {groupWidth: "95%"},
-                                legend: { position: "none" },
-                            };
-                            var barchart = new google.visualization.BarChart(document.getElementById("barChart"));
-                            barchart.draw(view, options);
-                        }
-                    </script>
-                    <!-- Barchart -->
-                    <div id="barChart" class="col" style="height: 300px;"></div>
-                    <!-- End of aspect count array for bar chart scripts-->
-                    <br>
-                {% endif %}
-                <!-- End of most common aspects scripts -->
-                
-                <!-- Show percentage of sentiments chart -->
+            <div class="col-6">
+                <p style="font-weight: bold;">First Ten Common Aspects</p>
+                <div id="barChart" class="col" style="height: 300px; border: 2px solid grey; border-radius: 5px; box-shadow: 4px 4px 2px #888888;"></div>
+            </div>
+            <div class="col-6">
+                <p style="font-weight: bold;">Sentiment Polarity Distribution</p>
+                <div id="pieChart" class="col" style="height: 300px; border: 2px solid grey; border-radius: 5px; border-radius: 5px; box-shadow: 4px 4px 2px #888888;"></div>
+            </div>
+        </div>
+        <div class="row">
+            <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+            <!-- Show most common aspects -->
+            {% if has_most_common == "True" %}
+                <!-- Get aspect count array for bar chart -->
                 <script>
-                    const sent_count_dict = {};
+                    const aspect_count_dict = {};
                 </script>
-                {% for key, value in sentiment_count_dict.items %}
+                {% for key, value in aspect_dict.items %}
                     <script>
                         var temp_key = '{{key}}';
                         var temp_value = '{{value}}';
-                        sent_count_dict[temp_key] = parseInt(temp_value);
+                        aspect_count_dict[temp_key] = parseInt(temp_value);
                     </script>
                 {% endfor %}
                 <script type="text/javascript">
-                    console.log(sent_count_dict);
-                    const sent_pie_arr = [];
-                    sent_pie_arr.push(["Sentiment Polarity", "Count"]); // push header
-                    let j = 0;
-                    for (const sentiment of Object.keys(sent_count_dict)) {
-                        let temp_arr = [];
-                        temp_arr.push(sentiment);
-                        temp_arr.push(sent_count_dict[sentiment]);
-                        sent_pie_arr.push(temp_arr);
+                    console.log(aspect_count_dict);
+                    const aspect_bar_arr = [];
+                    aspect_bar_arr.push(["Aspect", "Count", { role: "style" }]); // push header
+                    const bar_colors = ["#0d6efd",
+                                        "#6610f2",
+                                        "#6f42c1",
+                                        "#d63384",
+                                        "#dc3545",
+                                        "#fd7e14",
+                                        "#ffc107",
+                                        "#198754",
+                                        "#1abc9c",
+                                        "#0dcaf0"];
+                    let i = 0;
+                    for (const aspect_term of Object.keys(aspect_count_dict)) {
+                        if (i == 10) {
+                            break;
+                        } else {
+                            let temp_arr = [];
+                            temp_arr.push(aspect_term);
+                            temp_arr.push(aspect_count_dict[aspect_term]);
+                            temp_arr.push(bar_colors[i]);
+                            aspect_bar_arr.push(temp_arr);
+                            i = i + 1;
+                        }
                     }
-                    console.log(sent_pie_arr);
+                    console.log(aspect_bar_arr);
 
-                    google.charts.load('current', {'packages':['corechart']});
-                    google.charts.setOnLoadCallback(drawPieChart);
+                    google.charts.load("current", {packages:["corechart"]});
+                    google.charts.setOnLoadCallback(drawBarChart);
 
-                    function drawPieChart() {
-                        var data = google.visualization.arrayToDataTable(sent_pie_arr);
+                    function drawBarChart() {
+                        var data = google.visualization.arrayToDataTable(aspect_bar_arr);
+                        var view = new google.visualization.DataView(data);
+                        view.setColumns([0, 1,
+                                            { calc: "stringify",
+                                            sourceColumn: 1,
+                                            type: "string",
+                                            role: "annotation" },
+                                            2]);
                         var options = {
-                        title: 'Sentiment Polarity Distribution',
-                        colors: ["#198754","#dc3545","#ffc107"],
-                        width: "100%"
+                            // title: "First Ten Most Common Aspect",
+                            width: "100%",
+                            bar: {groupWidth: "95%"},
+                            legend: { position: "none" },
                         };
-                        var pieChart = new google.visualization.PieChart(document.getElementById('pieChart'));
-                        pieChart.draw(data, options);
+                        var barchart = new google.visualization.BarChart(document.getElementById("barChart"));
+                        barchart.draw(view, options);
                     }
-                    
                 </script>
-                <div id="pieChart" class="col" style="height: 300px;"></div>
-                <!-- End of  show percentage of sentiments chart scripts -->
-            <!-- End of show charts scripts-->
+                <!-- Barchart -->
+                <div class="">
+
+                </div>
+                
+                <!-- End of aspect count array for bar chart scripts-->
+                <br>
+            {% endif %}
+            <!-- End of most common aspects scripts -->
+            
+            <!-- Show percentage of sentiments chart -->
+            <!-- <p>Sentiment Polarity Distribution</p> -->
+            <script>
+                const sent_count_dict = {};
+            </script>
+            {% for key, value in sentiment_count_dict.items %}
+                <script>
+                    var temp_key = '{{key}}';
+                    var temp_value = '{{value}}';
+                    sent_count_dict[temp_key] = parseInt(temp_value);
+                </script>
+            {% endfor %}
+            <script type="text/javascript">
+                console.log(sent_count_dict);
+                const sent_pie_arr = [];
+                sent_pie_arr.push(["Sentiment Polarity", "Count"]); // push header
+                let j = 0;
+                for (const sentiment of Object.keys(sent_count_dict)) {
+                    let temp_arr = [];
+                    temp_arr.push(sentiment);
+                    temp_arr.push(sent_count_dict[sentiment]);
+                    sent_pie_arr.push(temp_arr);
+                }
+                console.log(sent_pie_arr);
+
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawPieChart);
+
+                function drawPieChart() {
+                    var data = google.visualization.arrayToDataTable(sent_pie_arr);
+                    var options = {
+                    // title: 'Sentiment Polarity Distribution',
+                    colors: ["#198754","#dc3545","#ffc107"],
+                    width: "100%"
+                    };
+                    var pieChart = new google.visualization.PieChart(document.getElementById('pieChart'));
+                    pieChart.draw(data, options);
+                }
+                
+            </script>
+            <!-- End of  show percentage of sentiments chart scripts -->
         </div>
         <div class="row">
             <div class="col">
-                <div class="table-responsive py-5" id="tables">
+                <div class="table-responsive py-4" id="tables">
                     <h6>Aspect Term Polarity Classification</h6>
                     <div class="table-wrapper-scroll-y my-custom-scrollbar" style="table-layout: fixed;">
                         <table class="table" id="table1">
@@ -330,16 +293,16 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
             <div class="col">
-                <div class="table-responsive py-5" id="tables">
+                <div class="table-responsive py-4" id="tables">
                     <h6>Sentence Polarity</h6>
                     <div class="table-wrapper-scroll-y my-custom-scrollbar" style="table-layout: fixed;">
                         <table class="table" id="table1">
                             <thead class="table text-left" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
                                 <tr>
                                     <th class="sticky-top" width="50%" scope="col" style="vertical-align: text-top;">Original Input</th>
-                                    <th class="sticky-top" scope="col" style="vertical-align: text-top;">Sentence Polarity</th>
+                                    <th class="sticky-top" scope="col" style="vertical-align: text-top; text-align: center;">Sentence Polarity</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -348,15 +311,15 @@
                                             <td style="text-align: left"> {{ values.0 }} </td>
                                             {% if values.1 == 'pos' %}
                                                 {% with name="positive" %}
-                                                <td style="text-align: left"> {{ name }} </td>
+                                                <td style="text-align: center"> {{ name }} </td>
                                                 {% endwith %}
                                             {% elif values.1 == 'neg' %}
                                                 {% with name="negative" %}
-                                                <td style="text-align: left"> {{ name }} </td>
+                                                <td style="text-align: center"> {{ name }} </td>
                                                 {% endwith %}
                                             {% elif values.1 == 'neu' %}
                                                 {% with name="neutral" %}
-                                                <td style="text-align: left"> {{ name }} </td>
+                                                <td style="text-align: center"> {{ name }} </td>
                                                 {% endwith %}
                                             {% endif %}
                                             
@@ -367,9 +330,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
     {% endif %}
+    <!-- End of show charts scripts-->
 
 
     <!-- JS Code for the Spinner -->
