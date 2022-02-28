@@ -83,7 +83,14 @@ button#csvModal{
     height: 33px;
     width: 94px;
 }
-button#btnClassify{
+button#btnClassifyText{
+    color: white;
+    background: #2C3E50;
+    border: none;
+    height: 33px;
+    width: 75px;
+}
+button#btnClassifyCSV{
     color: white;
     background: #2C3E50;
     border: none;
