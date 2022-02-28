@@ -48,9 +48,12 @@
     </div>
 
     <!-- PROGRESS BAR -->
-    <div id="progressbar" style="width: 70%; background-color: #ddd;">
-        <div id="bar" style="width: 1%; height: 30px; background-color: #04AA6D;"></div>
+    <div class="progContainer d-flex justify-content-center">
+        <div id="progressbar" style="display: none; width: 87%; background-color: #ddd;">
+            <div id="bar" style="width: 0%; height: 30px; background-color: #04AA6D;"> 0%</div>
+        </div>
     </div>
+    
 
     <!-- If the text inputted passed the requirements and has the right format, then continue -->
     {% if text_allowed == "yes" %}
@@ -280,7 +283,7 @@
         <div class="row">
             <div class="col">
                 <div class="table-responsive py-4" id="tables">
-                    <h6>Aspect Term Polarity Classification and Overall Sentence Polarity</h6>
+                    <h6>AB Sentilyzer's Results on Multiple Input Classification</h6>
                     <div class="table-wrapper-scroll-y my-custom-scrollbar" style="table-layout: fixed;">
                         <table class="table" id="table1">
                             <thead class="table text-left" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
@@ -378,15 +381,14 @@
 
     <!-- JS Code for Progress Bar -->
     <script>
-        $('#form_csv').submit(function(){
-            // show progress bar
-            var i = 0;
-            document.getElementById("progressBar").style.display = 'block';
+        var i = 0;
+        function showProgressBar(){
+            document.getElementById("progressbar").style.display = 'block';
             if (i == 0) {
                 i = 1;
                 var element = document.getElementById("bar");
                 var width = 1;
-                var id = setInterval(frame, 180);
+                var id = setInterval(frame, "{{row_length}}");
                 function frame() {
                 if (width >= 100) {
                     clearInterval(id);
@@ -394,10 +396,32 @@
                 } else {
                     width++;
                     element.style.width = width + "%";
+                    element.innerHTML = width  + "%";
                 }
                 }
             }
-        });
+        }
+            
+        // var i = 0;
+        // function showProgressBar(){
+        //     document.getElementById("progressbar").style.display = 'block';
+        //     if (i == 0) {
+        //         i = 1;
+        //         var element = document.getElementById("bar");
+        //         var width = 1;
+        //         var id = setInterval(frame, 200);
+        //         function frame() {
+        //         if (width >= 100) {
+        //             clearInterval(id);
+        //             i = 0;
+        //         } else {
+        //             width++;
+        //             element.style.width = width + "%";
+        //             element.innerHTML = width  + "%";
+        //         }
+        //         }
+        //     } 
+        // }
     </script>
 
     <!-- JS Code for Scrollbar -->
@@ -428,7 +452,7 @@
                             <div class="btn-toolbar">
                                 <button id="preview" type="button" class="btn btn-primary btn-sm" style="height: 33px;">Preview</button>
                                 <p class="px-2">or</p>
-                                <button type="submit" id="btnClassify" data-bs-dismiss="modal" class="btn btn-primary btn-sm">Classify</button>
+                                <button type="submit" id="btnClassify" data-bs-dismiss="modal" class="btn btn-primary btn-sm" onclick="showProgressBar()">Classify</button>
                             </div>                        
                         </div>
                     </form>
