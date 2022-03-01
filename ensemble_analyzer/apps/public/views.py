@@ -29,6 +29,8 @@ import os
 def index(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         context = {}
+        csv_rowError = False
+        not_input = False
         form = InputForm(request.POST, request.FILES)
         
         if form.is_valid():
@@ -91,6 +93,14 @@ def index(request: HttpRequest) -> HttpResponse:
                             {'form': form, 
                             'main_table_dict': main_table_dict,
                             'text_allowed':'yes'})
+        elif form.isNotLarge:
+            form = InputForm()
+            csv_rowError = True
+            return render(request, "index.html", {'form': form, 'csv_rowError':csv_rowError})
+        elif form.isNotInput:
+            form = InputForm()
+            not_input = True
+            return render(request, "index.html", {'form': form, 'not_input':not_input})
     else:
         form = InputForm()
         return render(request, "index.html", {'form': form})

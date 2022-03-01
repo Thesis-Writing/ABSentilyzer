@@ -387,73 +387,77 @@
             document.getElementById("btnClassifyCSV").disabled = true;
             
             function previewCSV(evt) {
-                document.getElementById("preview").disabled = false;
-                document.getElementById("btnClassifyCSV").disabled = false;
+                const file = evt.target.files[0];
+                const name = file['name']
+                const ext = name.split('.').pop();
 
-                document.getElementById('preview').addEventListener("click", ()=>{
-                    var file = evt.target.files[0];
-                    if (file) {
-                            var myWindow = window.open("", "", "width=800,height=500");
-                            var read = new FileReader();
-                            read.onload = function(e){
-                                var contents = e.target.result;
-                                var lines = contents.split("\n"), output = [];
-                                for (var i=0; i<lines.length; i++) {
-                                    output.push("<tr><td>" + lines[i].split(",").join("</td><td>") + "</td></tr>");
-                                }
-                                output = "<table>" + output.join("") + "</table>";
-                                myWindow.document.write(output);
-                            }
-                            read.readAsText(file);
-                            myWindow.document.write(output);
-                    }
-                });
-                document.getElementById('btnClassifyCSV').addEventListener("click", ()=>{
-                    var file = evt.target.files[0];
-                    if (file) {
+                console.log(ext);
+
+                if (ext == 'csv') {
+                    document.getElementById("preview").disabled = false;
+                    document.getElementById("btnClassifyCSV").disabled = false;
+
+
+                    document.getElementById('preview').addEventListener("click", ()=> {
+                        var myWindow = window.open("", "", "width=800,height=500");
                         var read = new FileReader();
-                        var self = this;
                         read.onload = function(e){
                             var contents = e.target.result;
-                            var lines = contents.split("\n");
-                            var length = (lines.length)-1; // do not include the header
-                            console.log("Length:");
-                            console.log(length);
-
-                            var prep_interval = length * 1100;
-                            console.log("prep_interval :" + prep_interval.toString());
-                            var ate_interval = length * 100;
-                            console.log("ate_interval: " + prep_interval.toString());
-                            var pos_interval = length * 1500;
-                            console.log("pos_interval: " + pos_interval.toString());
-                            var neg_interval = length * 1500;
-                            console.log("neg_interval: " + neg_interval.toString());
-                            var neu_interval = length * 3000;
-                            console.log("neu_interval: " + neu_interval.toString());
-                            var process_time = prep_interval + ate_interval + pos_interval + neg_interval + neu_interval;
-                            console.log("Process time in ms:");
-                            console.log(process_time);
-
-                            showProgressBar(process_time);
+                            var lines = contents.split("\n"), output = [];
+                            for (var i=0; i<lines.length; i++) {
+                                output.push("<tr><td>" + lines[i].split(",").join("</td><td>") + "</td></tr>");
+                            }
+                            output = "<table>" + output.join("") + "</table>";
+                            myWindow.document.write(output);
                         }
                         read.readAsText(file);
-                    } else {
-                        alert("Failed to load file! Check if the file type is correct.");
-                    }
-                });
-            }
-            document.getElementById('FileUploadCSV').addEventListener('change', previewCSV);
+                        myWindow.document.write(output);
+                    });
 
-            function validatePreviewButton(evt){
-                try {
-                    var file = evt.target.files[0];
-                    console.log("Here");
-                    console.log(file);
+                    var content = evt.target.result;
+                    var content_lines = contents.split("\n");
+                    var content_length = content_lines.length;
+                    console.log(content_length);
+
+                    if (length < 501) {
+                        document.getElementById('btnClassifyCSV').addEventListener("click", ()=> {
+                            var read = new FileReader();
+                            var self = this;
+                            read.onload = function(e) {
+                                var contents = e.target.result;
+                                var lines = contents.split("\n");
+                                var length = (lines.length)-1; // do not include the header
+                                console.log("Length:");
+                                console.log(length);
+
+                                var prep_interval = length * 1100;
+                                console.log("prep_interval :" + prep_interval.toString());
+                                var ate_interval = length * 100;
+                                console.log("ate_interval: " + prep_interval.toString());
+                                var pos_interval = length * 1500;
+                                console.log("pos_interval: " + pos_interval.toString());
+                                var neg_interval = length * 1500;
+                                console.log("neg_interval: " + neg_interval.toString());
+                                var neu_interval = length * 3000;
+                                console.log("neu_interval: " + neu_interval.toString());
+                                var process_time = prep_interval + ate_interval + pos_interval + neg_interval + neu_interval;
+                                console.log("Process time in ms:");
+                                console.log(process_time);
+
+                                showProgressBar(process_time);
+                            }
+                            read.readAsText(file);
+                        });
+                    } else {
+                        alert("Uploaded CSV File is greater than 500 rows.");
+                    }
+                } else {
+                    alert("Failed to load file! Check if the file type is correct.");   
                 }
-                catch(err) {
-                    alert("There's no uploaded file to preview.");
-                }
-            }
+
+
+            } 
+            document.getElementById('FileUploadCSV').addEventListener('change', previewCSV);
         </script>
 
         <!-- Disabling the form on submission (CSV) -->
@@ -476,7 +480,9 @@
     <script>alert("You have to write or upload something!")</script> 
     {% endif %}
 
-   
+    {% if not_input %}
+    <script>alert("Column name not input!")</script> 
+    {% endif %}
 
     <!-- If the uploaded CSV exceeds the minimum row allowed, return the error alert box -->
     {% if csv_rowError %}
