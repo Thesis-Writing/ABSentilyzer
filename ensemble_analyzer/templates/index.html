@@ -356,7 +356,7 @@
                 var element = document.getElementById("bar");
                 var width = 1;
                 var interval = process_time/100;
-                console.log("Progress bar change every" + interval.toString() + "milliseconds");
+                console.log("Progress bar change every " + interval.toString() + " milliseconds");
                 var id = setInterval(frame, interval);
                 function frame() {
                     if (width >= 100) {
@@ -410,11 +410,17 @@
     
         <!-- PREVIEW CSV  -->
         <script>
+            document.getElementById("preview").disabled = true;
+            document.getElementById("btnClassifyCSV").disabled = true;
+            
             function previewCSV(evt) {
+                document.getElementById("preview").disabled = false;
+                document.getElementById("btnClassifyCSV").disabled = false;
+
                 document.getElementById('preview').addEventListener("click", ()=>{
-                    var myWindow = window.open("", "", "width=800,height=500");
                     var file = evt.target.files[0];
                     if (file) {
+                            var myWindow = window.open("", "", "width=800,height=500");
                             var read = new FileReader();
                             read.onload = function(e){
                                 var contents = e.target.result;
@@ -427,8 +433,6 @@
                             }
                             read.readAsText(file);
                             myWindow.document.write(output);
-                    } else if (file == null || file == '') {
-                        alert("There's no uploaded file to preview.");
                     }
                 });
                 document.getElementById('btnClassifyCSV').addEventListener("click", ()=>{
@@ -468,12 +472,14 @@
             document.getElementById('FileUploadCSV').addEventListener('change', previewCSV);
 
             function validatePreviewButton(evt){
-                document.getElementById('preview').addEventListener("click", ()=>{
-                    this.checkPreview = evt.target.value;
-                    if(this.checkPreview == null || this.checkPreview == ''){
-                        alert("There's no uploaded file to preview.");
-                    }
-                });
+                try {
+                    var file = evt.target.files[0];
+                    console.log("Here");
+                    console.log(file);
+                }
+                catch(err) {
+                    alert("There's no uploaded file to preview.");
+                }
             }
         </script>
 
