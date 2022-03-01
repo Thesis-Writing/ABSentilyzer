@@ -466,15 +466,17 @@
         </script>
     </div>
 
+    <!-- If the file type of the uploaded file is not csv, return the error alert box -->
+    {% if filetype_error %}
+    <script>alert("Unsupported file type.")</script> 
+    {% endif %}
+
     <!-- If there is no input and the form was submitted, return the error alert box -->
     {% if no_input %}
     <script>alert("You have to write or upload something!")</script> 
     {% endif %}
 
-    <!-- If the file type of the uploaded file is not csv, return the error alert box -->
-    {% if filetype_error %}
-    <script>alert("Unsupported file type.")</script> 
-    {% endif %}
+   
 
     <!-- If the uploaded CSV exceeds the minimum row allowed, return the error alert box -->
     {% if csv_rowError %}
