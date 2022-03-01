@@ -27,13 +27,13 @@
 <body>
     <!-- Page's main contents -->
     <div class="container contents py-5" style="height: 50vh;">
-        <form action="" method="POST" enctype="multipart/form-data" id="form_text">
+        <form action="" method="POST" enctype="multipart/form-data" id="form_text" >
             {% csrf_token %}
             {{ form.text }}
             <div class="btn-toolbar">
-                <button type="button" class="btn btn-primary btn-sm" id="csvModal" data-bs-toggle="modal" data-bs-target="#exampleModal">Upload CSV</button>
+                <button type="button" name="modalName" class="btn btn-primary btn-sm" id="csvModal" data-bs-toggle="modal" data-bs-target="#exampleModal">Upload CSV</button>
                 <p class="px-2">or</p>
-                <button type="submit" id="btnClassifyText" class="btn btn-primary btn-sm" onclick="show(loader)">Classify</button>
+                <button type="submit" name="classifyName" id="btnClassifyText" class="btn btn-primary btn-sm" onclick="show(loader);">Classify</button>
             </div>
         </form>
     </div>
@@ -291,53 +291,26 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="row">
-            <div class="col">
-                <div class="table-responsive py-4" id="tables">
-                    <h6>Sentence Polarity</h6>
-                    <div class="table-wrapper-scroll-y my-custom-scrollbar" style="table-layout: fixed;">
-                        <table class="table" id="table1">
-                            <thead class="table text-left" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
-                                <tr>
-                                    <th class="sticky-top" width="50%" scope="col" style="vertical-align: text-top;">Original Input</th>
-                                    <th class="sticky-top" scope="col" style="vertical-align: text-top; text-align: center;">Sentence Polarity</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for key,values in final_sentence_polarity_table_dict.items %}
-                                    <tr>
-                                            <td style="text-align: left"> {{ values.0 }} </td>
-                                            {% if values.1 == 'pos' %}
-                                                {% with name="positive" %}
-                                                <td style="text-align: center"> {{ name }} </td>
-                                                {% endwith %}
-                                            {% elif values.1 == 'neg' %}
-                                                {% with name="negative" %}
-                                                <td style="text-align: center"> {{ name }} </td>
-                                                {% endwith %}
-                                            {% elif values.1 == 'neu' %}
-                                                {% with name="neutral" %}
-                                                <td style="text-align: center"> {{ name }} </td>
-                                                {% endwith %}
-                                            {% endif %}
-                                            
-                                    </tr>
-                                {%endfor%}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     
     
     </div>
     {% endif %}
     <!-- End of show charts scripts-->
 
-    <!-- JS Code for the Spinner -->
+    <!-- Prevent resubmit -->
+    <script>
+        if ( window.history.replaceState ) {
+          window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
+
+
+    <!-- JS Code for the Spinner and disabling buttons while processing  (text)-->
     <script>
     $('#form_text').submit(function() {
+        // disableFunc()
+        $(this).find('button[type=submit]').prop('disabled', true);
+        $(this).find('button[type=button]').prop('disabled', true);
         // show loader
         document.getElementById("loader").style.display = 'block';
     });
@@ -400,7 +373,7 @@
                             <div class="btn-toolbar">
                                 <button id="preview" type="button" class="btn btn-primary btn-sm" style="height: 33px;">Preview</button>
                                 <p class="px-2">or</p>
-                                <button type="submit" id="btnClassifyCSV" data-bs-dismiss="modal" class="btn btn-primary btn-sm">Classify</button>
+                                <button type="submit" id="btnClassifyCSV" data-bs-dismiss="modal" class="btn btn-primary btn-sm" OnClick="disableFunc()">Classify</button>
                             </div>                        
                         </div>
                     </form>
@@ -483,6 +456,14 @@
             }
         </script>
 
+        <!-- Disabling the form on submission (CSV) -->
+        <script>
+            function disableFunc() {
+                document.getElementById("textAreaWidget").disabled = true;
+                document.getElementById("csvModal").disabled = true;
+                document.getElementById("btnClassifyText").disabled = true;
+            }
+        </script>
     </div>
 
     <!-- If there is no input and the form was submitted, return the error alert box -->
