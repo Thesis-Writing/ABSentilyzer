@@ -384,25 +384,27 @@
     <!-- JS Code for Progress Bar -->
     <script>
         var i = 0;
-        function showProgressBar(total_interval){
-            console.log("Passed interval:");
-            console.log(total_interval);
+        function showProgressBar(process_time){
+            console.log("Passed process time in ms:");
+            console.log(process_time);
             document.getElementById("progressbar").style.display = 'block';
             if (i == 0) {
-                console.log(total_interval);
+                console.log(process_time);
                 i = 1;
                 var element = document.getElementById("bar");
                 var width = 1;
-                var id = setInterval(frame, total_interval);
+                var interval = process_time/100;
+                console.log("Progress bar change every" + interval.toString() + "milliseconds");
+                var id = setInterval(frame, interval);
                 function frame() {
-                if (width >= 100) {
-                    clearInterval(id);
-                    i = 0;
-                } else {
-                    width++;
-                    element.style.width = width + "%";
-                    element.innerHTML = width  + "%";
-                }
+                    if (width >= 100) {
+                        clearInterval(id);
+                        i = 0;
+                    } else {
+                        width++;
+                            element.style.width = width + "%";
+                            element.innerHTML = width  + "%";
+                    }
                 }
             }
         }
@@ -479,21 +481,21 @@
                             console.log("Length:");
                             console.log(length);
 
-                            var prep_interval = length * 1.5;
+                            var prep_interval = length * 1100;
                             console.log("prep_interval :" + prep_interval.toString());
-                            var ate_interval = length * 0.5;
+                            var ate_interval = length * 100;
                             console.log("ate_interval: " + prep_interval.toString());
-                            var pos_interval = length * 1;
+                            var pos_interval = length * 1500;
                             console.log("pos_interval: " + pos_interval.toString());
-                            var neg_interval = length * 1;
+                            var neg_interval = length * 1500;
                             console.log("neg_interval: " + neg_interval.toString());
-                            var neu_interval = length * 1;
+                            var neu_interval = length * 3000;
                             console.log("neu_interval: " + neu_interval.toString());
-                            var total_interval = prep_interval + ate_interval + pos_interval + neg_interval + neu_interval;
-                            console.log("Total Interval:");
-                            console.log(total_interval);
+                            var process_time = prep_interval + ate_interval + pos_interval + neg_interval + neu_interval;
+                            console.log("Process time in ms:");
+                            console.log(process_time);
 
-                            showProgressBar(total_interval);
+                            showProgressBar(process_time);
                         }
                         read.readAsText(file);
                     } else {
