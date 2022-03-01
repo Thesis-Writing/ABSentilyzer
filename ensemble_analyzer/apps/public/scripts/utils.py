@@ -285,11 +285,12 @@ def get_aspect_from_dict(aspect_dict_list):
         inner_dict = annotated_aspect_list[j]
         for aspect in inner_dict:
           inner_list.append(aspect)
+      inner_list = list(dict.fromkeys(inner_list))
       aspect_list.append(inner_list)
   except Exception as e:
     print(aspect_dict_list)
     print(e)
-    
+  
   return aspect_list
 
 def remove_duplicate_aspects(aspect_list):
@@ -402,12 +403,12 @@ def get_test_aspect_dict_list(opinion_aspect_dict_list):
       try:
         opinion_aspect = inner_list[j]
         for opinion,aspect in opinion_aspect.items():
+          polarity = 'neutral'
           if opinion in positive_opinion_words:
-            pre_labelled_aspect.append({aspect:"positive"})
-          elif opinion in negative_opinion_words:
-            pre_labelled_aspect.append({aspect:"negative"})
-          else:
-            pre_labelled_aspect.append({aspect:"neutral"})
+            polarity = "positive"
+          if opinion in negative_opinion_words:
+            polarity = "negative"
+          pre_labelled_aspect.append({aspect:polarity})
       except:
         print(j)
         print(inner_list[j])
