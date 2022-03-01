@@ -14,6 +14,6 @@ from . import views
 app_name="public"
 urlpatterns = [
     path("", views.index, name="index"),
-    path("Docs", views.how, name="how"),
+    path("Features", views.how, name="how"),
     path("About", views.about, name="about"),
 ]
