@@ -29,81 +29,60 @@ import os
 def index(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         context = {}
+        csv_rowError = False
+        not_input = False
         form = InputForm(request.POST, request.FILES)
-
+        
         if form.is_valid():
-            outText = form.cleaned_data.get("text")
-            outCSV = form.cleaned_data.get("csv")
             
-            if outCSV:
-                print(outCSV.name) #prints the file name in the console
-
-                # file type validation
-                ext = os.path.splitext(outCSV.name)[1] # returns path+filename
-                valid_filetype = ['.csv']
-                if ext.lower() in valid_filetype:
-                    try:
-                        #read uploaded csv
-                        data = read_csv(outCSV)
-                    except:
-                        #read uploaded csv
-                        data = read_csv(outCSV, encoding='cp1252')
-
-                    # the system has a note that the column the user wants to classify must be renamed as "input"
-                    # convert "input column into list"
-                    included_col = data['input'].tolist()
-
-                    # check no. of rows
-                    check_rows = (len(included_col))
-
-                    # number of rows validation
-                    if check_rows <= 499:
-                        # proceed to backend
-                        main_table_dict = {}
-                        final_sentence_polarity_table_dict = {}
-                        context['form'] = form
-
-                        # outCSV must be a list
-                        analyzer = ABSentilyzer(included_col)
-                        analyzer.process_input()
-                        
-                        (main_table_dict,
-                            final_sentence_polarity_table_dict) = analyzer.get_tables()
-                        
-                        aspect_dict = get_most_common_aspect(main_table_dict);
-                        has_most_common = False
-                        if len(set(aspect_dict.values()))!=1:
-                            has_most_common = "True"
-                        else:
-                            has_most_common = "False"
-                        
-                        sentiment_count_dict = get_sentiment_count(final_sentence_polarity_table_dict)
-                        
-                        print(check_rows)
-                        return render(request, "index.html", 
-                                    {'form': form, 
-                                        'main_table_dict': main_table_dict, 
-                                        'aspect_dict': aspect_dict,
-                                        'has_most_common': has_most_common,
-                                        'sentiment_count_dict': sentiment_count_dict,
-                                        'csv_allowed':'yes',
-                                        'row_length':check_rows})
-
-                    # else if row is greater than 500, raise csv_rowError validation then reload page
-                    else:
-                        form = InputForm()
-                        return render(request, "index.html", {'form': form, 'csv_rowError': True})
+            isText = form.check_text()
+            isCSV = form.check_csv()
+            
+            if isCSV:
                 
-                # else if filetype is not supported, raise filetype_error validation then reload page
-                else:
-                    form = InputForm()
-                    return render(request, "index.html", {'form': form, 'filetype_error': True})            
+                included_col, check_rows = form.get_csv()
 
-            elif outText:
+                main_table_dict = {}
+                final_sentence_polarity_table_dict = {}
+                context['form'] = form
+
+                # outCSV must be a list
+                analyzer = ABSentilyzer(included_col)
+                analyzer.process_input()
+                
+                (main_table_dict,
+                    final_sentence_polarity_table_dict) = analyzer.get_tables()
+                
+                aspect_dict = get_most_common_aspect(main_table_dict)
+                has_most_common = False
+                if len(set(aspect_dict.values()))!=1:
+                    has_most_common = "True"
+                else:
+                    has_most_common = "False"
+                
+                sentiment_count_dict = get_sentiment_count(final_sentence_polarity_table_dict)
+                
+                print(check_rows)
+                return render(request, "index.html", 
+                            {'form': form, 
+                                'main_table_dict': main_table_dict, 
+                                'aspect_dict': aspect_dict,
+                                'has_most_common': has_most_common,
+                                'sentiment_count_dict': sentiment_count_dict,
+                                'csv_allowed':'yes',
+                                'row_length':check_rows})
+
+            elif isText:
+                print("Here")
+                
+                inputText = form.get_text()
+                
+                print("Input text")
+                
                 main_table_dict = {}
                 final_sentence_polarity_table_dict = {}
                 user_input = []
-                user_input.append(outText)
+                user_input.append(inputText)
                 
                 context['form'] = form
                 context['main_table_dict'] = main_table_dict
@@ -117,12 +96,19 @@ def index(request: HttpRequest) -> HttpResponse:
                             {'form': form, 
                             'main_table_dict': main_table_dict,
                             'text_allowed':'yes'})
-
-        # else if there is no input, raise no_input validation then reload page
+                
+        elif form.isNotLarge:
+            form = InputForm()
+            csv_rowError = True
+            return render(request, "index.html", {'form': form, 'csv_rowError':csv_rowError})
+        elif form.isNotInput:
+            form = InputForm()
+            not_input = True
+            return render(request, "index.html", {'form': form, 'not_input':not_input})
         else:
             form = InputForm()
-            return render(request, "index.html", {'form': form, 'no_input': True})
-
+            no_input = True
+            return render(request, "index.html", {'form': form, 'no_input':no_input})
     else:
         form = InputForm()
         return render(request, "index.html", {'form': form})

@@ -6,8 +6,8 @@
     # Date Written      : October 24, 2021
     # Date Revised      : December 12, 2021
     # Purpose           : Serves as the template for the default page shown
-                          on the website if no other page is specified when 
-                          a user requests the site.
+                            on the website if no other page is specified when 
+                            a user requests the site.
 -->
 
 {% extends 'base.html' %}
@@ -387,73 +387,70 @@
             document.getElementById("btnClassifyCSV").disabled = true;
             
             function previewCSV(evt) {
-                document.getElementById("preview").disabled = false;
-                document.getElementById("btnClassifyCSV").disabled = false;
+                const file = evt.target.files[0];
+                const name = file['name']
+                const ext = name.split('.').pop();
+                const event = evt;
 
-                document.getElementById('preview').addEventListener("click", ()=>{
-                    var file = evt.target.files[0];
-                    if (file) {
-                            var myWindow = window.open("", "", "width=800,height=500");
-                            var read = new FileReader();
-                            read.onload = function(e){
-                                var contents = e.target.result;
-                                var lines = contents.split("\n"), output = [];
-                                for (var i=0; i<lines.length; i++) {
-                                    output.push("<tr><td>" + lines[i].split(",").join("</td><td>") + "</td></tr>");
-                                }
-                                output = "<table>" + output.join("") + "</table>";
-                                myWindow.document.write(output);
+                console.log(ext);
+
+                if (ext == 'csv') {
+                    document.getElementById("preview").disabled = false;
+                    document.getElementById("btnClassifyCSV").disabled = false;
+
+                    document.getElementById('preview').addEventListener("click", ()=> {
+                        var myWindow = window.open("", "", "width=800,height=500");
+                        var read = new FileReader();
+                        read.onload = function(e){
+                            var contents = e.target.result;
+                            var lines = contents.split("\n"), output = [];
+                            for (var i=0; i<lines.length; i++) {
+                                output.push("<tr><td>" + lines[i].split(",").join("</td><td>") + "</td></tr>");
                             }
-                            read.readAsText(file);
+                            output = "<table>" + output.join("") + "</table>";
                             myWindow.document.write(output);
-                    }
-                });
-                document.getElementById('btnClassifyCSV').addEventListener("click", ()=>{
-                    var file = evt.target.files[0];
-                    if (file) {
+                        }
+                        read.readAsText(file);
+                        myWindow.document.write(output);
+                    });
+
+                    document.getElementById('btnClassifyCSV').addEventListener("click", ()=> {
                         var read = new FileReader();
                         var self = this;
-                        read.onload = function(e){
+                        read.onload = function(e) {
                             var contents = e.target.result;
                             var lines = contents.split("\n");
                             var length = (lines.length)-1; // do not include the header
                             console.log("Length:");
                             console.log(length);
 
-                            var prep_interval = length * 1100;
-                            console.log("prep_interval :" + prep_interval.toString());
-                            var ate_interval = length * 100;
-                            console.log("ate_interval: " + prep_interval.toString());
-                            var pos_interval = length * 1500;
-                            console.log("pos_interval: " + pos_interval.toString());
-                            var neg_interval = length * 1500;
-                            console.log("neg_interval: " + neg_interval.toString());
-                            var neu_interval = length * 3000;
-                            console.log("neu_interval: " + neu_interval.toString());
-                            var process_time = prep_interval + ate_interval + pos_interval + neg_interval + neu_interval;
-                            console.log("Process time in ms:");
-                            console.log(process_time);
+                            if (length < 501) {
+                                var prep_interval = length * 1100;
+                                console.log("prep_interval :" + prep_interval.toString());
+                                var ate_interval = length * 100;
+                                console.log("ate_interval: " + prep_interval.toString());
+                                var pos_interval = length * 1500;
+                                console.log("pos_interval: " + pos_interval.toString());
+                                var neg_interval = length * 1500;
+                                console.log("neg_interval: " + neg_interval.toString());
+                                var neu_interval = length * 3000;
+                                console.log("neu_interval: " + neu_interval.toString());
+                                var process_time = prep_interval + ate_interval + pos_interval + neg_interval + neu_interval;
+                                console.log("Process time in ms:");
+                                console.log(process_time);
 
-                            showProgressBar(process_time);
+                                showProgressBar(process_time);
+                            }
                         }
                         read.readAsText(file);
-                    } else {
-                        alert("Failed to load file! Check if the file type is correct.");
-                    }
-                });
-            }
-            document.getElementById('FileUploadCSV').addEventListener('change', previewCSV);
+                    });
+                } else {
+                    alert("Failed to load file! Check if the file type is correct.");   
+                }
 
-            function validatePreviewButton(evt){
-                try {
-                    var file = evt.target.files[0];
-                    console.log("Here");
-                    console.log(file);
-                }
-                catch(err) {
-                    alert("There's no uploaded file to preview.");
-                }
-            }
+
+            } 
+            document.getElementById('FileUploadCSV').addEventListener('change', previewCSV);
         </script>
 
         <!-- Disabling the form on submission (CSV) -->
@@ -466,14 +463,18 @@
         </script>
     </div>
 
+    <!-- If the file type of the uploaded file is not csv, return the error alert box -->
+    {% if filetype_error %}
+    <script>alert("Unsupported file type.")</script> 
+    {% endif %}
+
     <!-- If there is no input and the form was submitted, return the error alert box -->
     {% if no_input %}
     <script>alert("You have to write or upload something!")</script> 
     {% endif %}
 
-    <!-- If the file type of the uploaded file is not csv, return the error alert box -->
-    {% if filetype_error %}
-    <script>alert("Unsupported file type.")</script> 
+    {% if not_input %}
+    <script>alert("Column name not input!")</script> 
     {% endif %}
 
     <!-- If the uploaded CSV exceeds the minimum row allowed, return the error alert box -->
