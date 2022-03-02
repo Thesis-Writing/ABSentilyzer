@@ -12,15 +12,14 @@
 #                         > get_train_data()
 #                         > preprocess_input()
 #                         > extract_aspect()
+#                           > remove_no_aspect_tweet()
 #                           > display_ate_output()
 #                         > classify_aspect_pol()
-#                           > remove_no_aspect_tweet()
 #                           > classify_aspect()
 #                         > aggregate_aspect_pol()
 #                         > get_tweet_pol()
 #                       > get_tables()
 #                         > get_main_table_dict()
-#                         > get_prep_table_dict()
 #                         > get_tweet_pol_table_dict()
 #                         > get_runtime()
 # Date Written      : December 1, 2021
@@ -66,13 +65,10 @@ class ABSentilyzer():
 
   def get_tables(self):
     self.get_main_table_dict()
-    self.get_prep_table_dict()
     self.get_tweet_pol_table_dict()
     self.get_runtime()
 
-    return (self.main_table_dict_list, 
-            self.preprocessed_table_dict, 
-            self.tweet_pol_table_dict)
+    return (self.main_table_dict_list, self.tweet_pol_table_dict)
 
   def get_runtime(self):
     end = time.time()
@@ -102,13 +98,10 @@ class ABSentilyzer():
                               mode="implement")
     (self.extracted_aspect_list, 
         self.opinion_aspect_dict_list, 
-        self.dependency_list, 
-        self.test_aspect_dict_list) = ate.get_extracted_aspects()
+        self.dependency_list) = ate.get_extracted_aspects()
+    self.remove_no_aspect_tweet()
+    self.test_aspect_dict_list = get_test_aspect_dict_list(self.opinion_aspect_dict_list)
     self.display_ate_output()
-
-    # Get the train and test input aspects only from dictionary
-    self.train_aspect_list = get_aspect_from_dict(self.train_aspect_dict_list) 
-    self.test_aspect_list = get_aspect_from_dict(self.test_aspect_dict_list)
 
   def display_ate_output(self):
     # Display aspect term extraction output on terminal
@@ -122,11 +115,13 @@ class ABSentilyzer():
   def remove_no_aspect_tweet(self):
     (self.original_test_text_list,
         self.preprocessed_test_text_list,
-        self.test_aspect_dict_list,
-        self.test_aspect_list) = check_tweet(self.original_test_text_list,
-                                            self.preprocessed_test_text_list,
-                                            self.test_aspect_dict_list,
-                                            self.test_aspect_list)
+        self.dependency_list,
+        self.opinion_aspect_dict_list,
+        self.extracted_aspect_list) = check_tweet(self.original_test_text_list,
+                                                  self.preprocessed_test_text_list,
+                                                  self.dependency_list,
+                                                  self.opinion_aspect_dict_list,
+                                                  self.extracted_aspect_list)
 
   def classify_aspect(self, polarity, mode):
     '''
@@ -144,14 +139,12 @@ class ABSentilyzer():
                             self.train_aspect_dict_list,
                             self.preprocessed_test_text_list, 
                             self.test_aspect_dict_list,
-                            self.test_aspect_list, 
+                            self.extracted_aspect_list, 
                             polarity=polarity, mode=mode)
     ensemble_prob_list = classifier.classify()
     return ensemble_prob_list
 
-  def classify_aspect_pol(self):
-    self.remove_no_aspect_tweet()
-    
+  def classify_aspect_pol(self):    
     self.pos_ensemble_prob_list = self.classify_aspect(polarity="pos",
                                                       mode="implement")
     self.neg_ensemble_prob_list = self.classify_aspect(polarity="neg",
@@ -160,7 +153,8 @@ class ABSentilyzer():
                                                       mode="implement")
 
   def aggregate_aspect_pol(self):
-    self.aspect_pol_list = get_aspect_polarity(self.test_aspect_list,
+    self.aspect_pol_list = get_aspect_polarity(self.extracted_aspect_list,
+                                              self.test_aspect_dict_list,
                                               self.pos_ensemble_prob_list,
                                               self.neg_ensemble_prob_list,
                                               self.neu_ensemble_prob_list)
@@ -170,7 +164,8 @@ class ABSentilyzer():
     self.senti_score_list = get_senti_scores(self.pos_ensemble_prob_list,
                                             self.neg_ensemble_prob_list,
                                             self.neu_ensemble_prob_list)
-    self.absa_label_list = get_sentence_polarity(self.senti_score_list)
+    self.absa_label_list = get_sentence_polarity(self.test_aspect_dict_list,
+                                                self.senti_score_list)
 
   def get_main_table_dict(self):
     self.main_table_dict_list = display_output(self.pos_ensemble_prob_list,
@@ -178,14 +173,10 @@ class ABSentilyzer():
                                               self.neu_ensemble_prob_list,
                                               self.original_test_text_list,
                                               self.preprocessed_test_text_list,
-                                              self.test_aspect_list,
+                                              self.extracted_aspect_list,
                                               self.aspect_pol_list,
                                               self.senti_score_list,
                                               self.absa_label_list)
-
-  def get_prep_table_dict(self):
-    self.preprocessed_table_dict = get_prep_table(self.original_test_text_list,
-                                                  self.preprocessed_test_text_list)
 
   def get_tweet_pol_table_dict(self):
     self.tweet_pol_table_dict = get_tweet_pol(self.original_test_text_list,

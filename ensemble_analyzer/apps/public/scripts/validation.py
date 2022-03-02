@@ -72,46 +72,54 @@ def check_no_aspect_input(original_input_list, preprocessed_input_list,
           temp_extracted_aspect_list, temp_opinion_aspect_dict_list, 
           temp_dependency_list, temp_pre_labelled_aspects)
 
-def check_tweet(original_test_text_list, test_list, 
-                        test_aspect_dict_list, test_aspect_list):
+def check_tweet(original_test_text_list, test_list,
+                dependency_list, opinion_aspect_dict_list, 
+                extracted_aspect_list):
   '''
     Remove inputs where there are no extracted aspects given by the ATE rules
     
     Data Structures
     ---------------
     Input:
-      test_list                    : LIST  
+      original_test_text_list
+      test_list                    : LIST
+      dependency_list              : LIST
+      opinion_aspect_dict_list     : LIST
       test_aspect_dict_list        : LIST  
-      test_aspect_list             : LIST  
+      extracted_aspect_list        : LIST  
     Returns:
-      temp_preprocessed_test_list  : LIST  
+      temp_preprocessed_test_list  : LIST
+      temp_dependency_list         : LIST
+      temp_opinion_aspect_dict_list: LIST
       test_aspect_dict_list        : LIST  
       temp_test_aspect_list        : LIST  
   '''
   
   empty_aspect_list = []
   
-  for i in range(len(test_aspect_list)):
-    aspects = test_aspect_list[i]
+  for i in range(len(extracted_aspect_list)):
+    aspects = extracted_aspect_list[i]
     if not aspects:
       empty_aspect_list.append(i)
 
   temp_original_test_text_list =[]
   temp_preprocessed_test_list = []
-  temp_test_aspect_dict_list = []
+  temp_dependency_list = []
+  temp_opinion_aspect_dict_list = []
   temp_test_aspect_list = []
-  
   
   for i in range(len(test_list)):
     if i not in empty_aspect_list:
       temp_original_test_text_list.append(original_test_text_list[i])
       temp_preprocessed_test_list.append(test_list[i])
-      temp_test_aspect_dict_list.append(test_aspect_dict_list[i])
-      temp_test_aspect_list.append(test_aspect_list[i])
+      temp_dependency_list.append(dependency_list[i])
+      temp_opinion_aspect_dict_list.append(opinion_aspect_dict_list[i])
+      temp_test_aspect_list.append(extracted_aspect_list[i])
 
 
   return (temp_original_test_text_list, temp_preprocessed_test_list,
-          test_aspect_dict_list, temp_test_aspect_list)
+          temp_dependency_list, temp_opinion_aspect_dict_list,
+          temp_test_aspect_list)
 
 def check_instance(var):
   '''
