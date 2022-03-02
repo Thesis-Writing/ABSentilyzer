@@ -56,6 +56,8 @@ class InputForm(forms.Form):
         self.isNotLarge = False
         self.isNotInput = False
         self.inputText = text
+        
+        print(text)
 
         if csv:
             # file type validation
@@ -94,13 +96,19 @@ class InputForm(forms.Form):
             else:
                 # else if filetype is not supported, raise filetype_error validation then reload page
                 raise forms.ValidationError('filetypemessagehere')
-        elif text:
+        elif text != '':
             self.isText = True
         else:
             raise forms.ValidationError('You have to write or upload something!')
 
     def get_text(self):
-        return self.isText, self.inputText
+        return self.inputText
 
     def get_csv(self):
-        return self.included_col, self.check_rows, self.isCSV 
+        return self.included_col, self.check_rows
+    
+    def check_csv(self):
+        return self.isCSV
+    
+    def check_text(self):
+        return self.isText

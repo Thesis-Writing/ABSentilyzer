@@ -35,15 +35,12 @@ def index(request: HttpRequest) -> HttpResponse:
         
         if form.is_valid():
             
-            isText, inputText = form.get_text()
-            included_col, check_rows, isCSV = form.get_csv()
+            isText = form.check_text()
+            isCSV = form.check_csv()
             
             if isCSV:
-                print(included_col)
-                print(check_rows)
-                print(isCSV)
-                print(isText)
-                print(inputText)
+                
+                included_col, check_rows = form.get_csv()
 
                 main_table_dict = {}
                 final_sentence_polarity_table_dict = {}
@@ -76,6 +73,12 @@ def index(request: HttpRequest) -> HttpResponse:
                                 'row_length':check_rows})
 
             elif isText:
+                print("Here")
+                
+                inputText = form.get_text()
+                
+                print("Input text")
+                
                 main_table_dict = {}
                 final_sentence_polarity_table_dict = {}
                 user_input = []
@@ -93,6 +96,7 @@ def index(request: HttpRequest) -> HttpResponse:
                             {'form': form, 
                             'main_table_dict': main_table_dict,
                             'text_allowed':'yes'})
+                
         elif form.isNotLarge:
             form = InputForm()
             csv_rowError = True
@@ -101,6 +105,10 @@ def index(request: HttpRequest) -> HttpResponse:
             form = InputForm()
             not_input = True
             return render(request, "index.html", {'form': form, 'not_input':not_input})
+        else:
+            form = InputForm()
+            no_input = True
+            return render(request, "index.html", {'form': form, 'no_input':no_input})
     else:
         form = InputForm()
         return render(request, "index.html", {'form': form})

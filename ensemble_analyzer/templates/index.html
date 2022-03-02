@@ -6,8 +6,8 @@
     # Date Written      : October 24, 2021
     # Date Revised      : December 12, 2021
     # Purpose           : Serves as the template for the default page shown
-                          on the website if no other page is specified when 
-                          a user requests the site.
+                            on the website if no other page is specified when 
+                            a user requests the site.
 -->
 
 {% extends 'base.html' %}
@@ -390,13 +390,13 @@
                 const file = evt.target.files[0];
                 const name = file['name']
                 const ext = name.split('.').pop();
+                const event = evt;
 
                 console.log(ext);
 
                 if (ext == 'csv') {
                     document.getElementById("preview").disabled = false;
                     document.getElementById("btnClassifyCSV").disabled = false;
-
 
                     document.getElementById('preview').addEventListener("click", ()=> {
                         var myWindow = window.open("", "", "width=800,height=500");
@@ -414,22 +414,17 @@
                         myWindow.document.write(output);
                     });
 
-                    var content = evt.target.result;
-                    var content_lines = contents.split("\n");
-                    var content_length = content_lines.length;
-                    console.log(content_length);
+                    document.getElementById('btnClassifyCSV').addEventListener("click", ()=> {
+                        var read = new FileReader();
+                        var self = this;
+                        read.onload = function(e) {
+                            var contents = e.target.result;
+                            var lines = contents.split("\n");
+                            var length = (lines.length)-1; // do not include the header
+                            console.log("Length:");
+                            console.log(length);
 
-                    if (length < 501) {
-                        document.getElementById('btnClassifyCSV').addEventListener("click", ()=> {
-                            var read = new FileReader();
-                            var self = this;
-                            read.onload = function(e) {
-                                var contents = e.target.result;
-                                var lines = contents.split("\n");
-                                var length = (lines.length)-1; // do not include the header
-                                console.log("Length:");
-                                console.log(length);
-
+                            if (length < 501) {
                                 var prep_interval = length * 1100;
                                 console.log("prep_interval :" + prep_interval.toString());
                                 var ate_interval = length * 100;
@@ -446,11 +441,9 @@
 
                                 showProgressBar(process_time);
                             }
-                            read.readAsText(file);
-                        });
-                    } else {
-                        alert("Uploaded CSV File is greater than 500 rows.");
-                    }
+                        }
+                        read.readAsText(file);
+                    });
                 } else {
                     alert("Failed to load file! Check if the file type is correct.");   
                 }
