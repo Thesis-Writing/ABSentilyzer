@@ -2,7 +2,8 @@
     This module is intended for the declaration of all the fields that is used in the form
 '''
 
-# Author            : Group 4
+# Author            : Keith Barrientos
+#                     Afrahly Afable
 # Calling Sequence  : InputForm(forms.Form)
 # Date Written      : October 14, 2021
 # Date Revised      : December 13, 2021
