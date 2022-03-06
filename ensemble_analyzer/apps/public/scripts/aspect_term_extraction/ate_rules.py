@@ -1,16 +1,22 @@
-'''
-  This module is intended for the extraction of aspect terms from user input using the rules indicated 
-  in the study of Shafie et al. (2014) with additional relation 'advmod' as found that it can extract compound aspect given
-  that the previous relation is nsubj and the governor of the previous relation is singular or plural noun.
-  In addition, the conj relation pattern was modified to accept NN/NNS/NNP governor as it was found that it can extract
-  not only singular aspect unlike in the study of Shafie et al. (2014)
-'''
+# Program Title         : ate_rules.py
+# Author                : Afrahly Afable
+# General System Design : This module is intended for the extraction of 
+#                         aspect terms from user input using the rules 
+#                         indicated in the study of Shafie et al. (2014)
+#                         with additional modifications in relations and rules.
+#                         for implementation.
+# Date Written          : November 3, 2021
+# Date Revised          : November 29, 2021
+# Purpose               : To extract aspects from user input for
+#                         aspect term polarity classification
+# Data Structures       : List, Dictionary, String
 
 
 import os
 
 CWD = os.getcwd()
-OPINION_WORDS_FILENAME = 'ensemble_analyzer/apps/public/data/resources/opinion_words.txt'
+OPINION_WORDS_FILENAME = 'ensemble_analyzer/apps/public/'\
+                          'data/resources/opinion_words.txt'
 OPINION_WORDS = open(os.path.join(CWD, OPINION_WORDS_FILENAME), 'r').read()
 OPINION_WORDS = OPINION_WORDS.split("\n")
 
@@ -45,7 +51,9 @@ def rel_nsubj(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
     rel_aspect_list.append(dep_token)
     rel_opinion_aspect_dict_list.append({gov_token:dep_token})
 
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 def rel_amod(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
   opinion = ''
@@ -76,7 +84,9 @@ def rel_amod(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
       rel_opinion_list.append(gov_token)
       rel_opinion_aspect_dict_list.append({dep_token:gov_token})
 
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list) 
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list) 
 
 def rel_dobj(gov_pos,gov_token,dep_pos,dep_token):
   rel_aspect_list = []
@@ -95,7 +105,9 @@ def rel_dobj(gov_pos,gov_token,dep_pos,dep_token):
       rel_aspect_list.append(dep_token)
       rel_opinion_aspect_dict_list.append({gov_token:dep_token})
 
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 def rel_nmod(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
   opinion = ''
@@ -115,7 +127,9 @@ def rel_nmod(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
     rel_aspect_list.append(dep_token)
     rel_opinion_aspect_dict_list.append({gov_token:dep_token})
 
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 def rel_conj(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
   opinion = ''
@@ -139,7 +153,9 @@ def rel_conj(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
     rel_aspect_list.append(gov_token)
     rel_opinion_aspect_dict_list.append({dep_token:gov_token})
 
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 def rel_comp(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
   opinion = ''
@@ -159,7 +175,9 @@ def rel_comp(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
       rel_aspect_list.append(dep_token  + " " + gov_token)
       rel_opinion_aspect_dict_list.append({opinion:dep_token  + " " + gov_token})
 
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 def rel_comp_prt(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
   has_opinion = False
@@ -175,7 +193,10 @@ def rel_comp_prt(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
   rel_aspect_list.append(gov_token  + " " + dep_token)
   rel_opinion_aspect_dict_list.append({opinion:gov_token  + " " + dep_token})
 
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list,has_opinion)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list,
+          has_opinion)
 
 def rel_comp_mwa(gov_pos,gov_token,dep_pos,dep_token,aspect_list,opinion_list):
   opinion = ''
@@ -202,7 +223,9 @@ def rel_comp_mwa(gov_pos,gov_token,dep_pos,dep_token,aspect_list,opinion_list):
             rel_opinion_list = []
             rel_opinion_aspect_dict_list = []
 
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 def rel_advmod(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
   opinion = ''
@@ -222,7 +245,9 @@ def rel_advmod(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
     rel_opinion_list.append(dep_token)
     rel_opinion_aspect_dict_list.append({dep_token:gov_token})
 
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 def rel_case(gov_pos,gov_token,dep_pos,dep_token):
   aspect_list = []
@@ -233,9 +258,15 @@ def rel_case(gov_pos,gov_token,dep_pos,dep_token):
     aspect_list.append(aspect)
     opinion_aspect_dict_list.append({opinion:aspect})
 
-  return aspect_list,opinion_aspect_dict_list
+  return (aspect_list,
+          opinion_aspect_dict_list)
 
-def case_of(gov_pos,gov_token,dep_pos,dep_token,aspect_list,opinion_aspect_dict_list) :
+def case_of(gov_pos, 
+            gov_token,
+            dep_pos, 
+            dep_token, 
+            aspect_list, 
+            opinion_aspect_dict_list) :
   opinion = ''
   rel_aspect_list = []
   rel_opinion_list = []
@@ -256,7 +287,9 @@ def case_of(gov_pos,gov_token,dep_pos,dep_token,aspect_list,opinion_aspect_dict_
   rel_aspect_list.append(aspect)
   rel_opinion_aspect_dict_list.append({opinion:aspect})
     
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 def case_to(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
   opinion = ''
@@ -268,22 +301,29 @@ def case_to(gov_pos,gov_token,dep_pos,dep_token,opinion_list):
     if opinion_list:
       opinion = opinion_list[len(opinion_list)-1]
       rel_opinion_list.append(opinion)
-    rel_aspect_list.append(dep_token + " " + "to" + " " + dep_token + " " + gov_token)
-    rel_opinion_aspect_dict_list.append({opinion:dep_token + " " + "to" + " " + dep_token + " " + gov_token})
+    rel_aspect_list.append(dep_token + " " + "to" + " " + dep_token + 
+                          " " + gov_token)
+    rel_opinion_aspect_dict_list.append({opinion:dep_token + " " + "to" + 
+                                        " " + dep_token + " " + gov_token})
   
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 def rel_dep(gov_pos,gov_token,dep_pos,dep_token):
   rel_aspect_list = []
   rel_opinion_list = []
   rel_opinion_aspect_dict_list = []
   
-  if gov_pos.startswith('J') or gov_pos.startswith('V') and dep_pos.startswith('N'):
+  if (gov_pos.startswith('J') or gov_pos.startswith('V') 
+      and dep_pos.startswith('N')):
     rel_opinion_list.append(gov_token)
     rel_aspect_list.append(dep_token)
     rel_opinion_aspect_dict_list.append({gov_token:dep_token})
   
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 
 def rel_aux(gov_pos,gov_token,dep_pos,dep_token):
@@ -296,7 +336,9 @@ def rel_aux(gov_pos,gov_token,dep_pos,dep_token):
     rel_aspect_list.append(dep_token)
     rel_opinion_aspect_dict_list.append({gov_token:dep_token})
   
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 
 def rel_xcomp(gov_pos,gov_token,dep_pos,dep_token):
@@ -309,7 +351,9 @@ def rel_xcomp(gov_pos,gov_token,dep_pos,dep_token):
     rel_aspect_list.append(dep_token)
     rel_opinion_aspect_dict_list.append({gov_token:dep_token})
   
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 def rel_csubj(gov_pos,gov_token,dep_pos,dep_token):
   rel_aspect_list = []
@@ -321,7 +365,9 @@ def rel_csubj(gov_pos,gov_token,dep_pos,dep_token):
     rel_aspect_list.append(dep_token)
     rel_opinion_aspect_dict_list.append({gov_token:dep_token})
 
-  return (rel_aspect_list, rel_opinion_list, rel_opinion_aspect_dict_list)
+  return (rel_aspect_list, 
+          rel_opinion_list, 
+          rel_opinion_aspect_dict_list)
 
 
 def remove_aspect(aspect_list,opinion_aspect_dict_list,aspect):
@@ -340,4 +386,6 @@ def remove_aspect(aspect_list,opinion_aspect_dict_list,aspect):
         temp_aspect_list.pop()
         temp_opinion_dict_list.pop()
       
-  return temp_aspect_list,temp_opinion_dict_list,position
+  return (temp_aspect_list,
+          temp_opinion_dict_list,
+          position)

@@ -1,22 +1,13 @@
-'''
-  This module is intended for the computation of the final aspect polarity of the tweet
-  from the polarities of the aspect terms
-'''
-
-# Author            : Afrahly Afable
-# Calling Sequence  : get_final_polarities(test_aspect_list,
-#                       pos_ensemble_prob_list,
-#                       neg_ensemble_prob_list,
-#                       neu_ensemble_prob_list)
-#                     get_aspect_final_polarity(pos_prob, neg_prob, neu_prob)
-#                     get_senti_scores(pos_ensemble_prob_list, 
-#                                     neg_ensemble_prob_list, 
-#                                     neu_ensemble_prob_list)
-#                       > get_score(prob_list)
-#                     get_sentence_polarity(senti_score_list)
-# Date Written      : December 1, 2021
-# Date Revised      : December 27, 2021
-# Purpose           : Compute for the final aspect term polarity and final tweet polarity
+# Program Title         : polarity_calculation.py
+# Author                : Afrahly Afable
+# General System Design : This module is intended for the computation of the
+#                         final aspect polarity of the tweet from the polarities 
+#                         of the aspect terms
+# Date Written          : December 1, 2021
+# Date Revised          : December 27, 2021
+# Purpose               : Compute for the final aspect term polarity and final
+#                         tweet polarity
+# Data Structures       : List, Dictionary, Integer, String
 
 def get_aspect_polarity(test_aspect_list, test_aspect_dict_list,
                         pos_ensemble_prob_list, neg_ensemble_prob_list, 
