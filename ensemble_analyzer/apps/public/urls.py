@@ -1,8 +1,4 @@
-'''
-  This module serves as the address book of public app
-'''
-
-# Author            : Group 4
+# Author            : Keith Barrientos
 # Calling Sequence  : N/A
 # Date Written      : October 05, 2021
 # Date Revised      : December 9, 2021
@@ -14,6 +10,6 @@ from . import views
 app_name="public"
 urlpatterns = [
     path("", views.index, name="index"),
-    path("Features", views.how, name="how"),
+    path("Features", views.how, name="features"),
     path("About", views.about, name="about"),
 ]

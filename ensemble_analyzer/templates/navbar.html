@@ -1,17 +1,19 @@
 <!-- 
-    This module uses the URLs defined in urls.py 
-
-    # Author            : Group 4
-    # Calling Sequence  : N/A
-    # Date Written      : October 5, 2021
-    # Date Revised      : December 9, 2021
-    # Purpose           : Serves as the template for the navbar used on all the pages.
+    Title               : navbar.html
+    Author              : Keith Barrientos
+    System Design       : Web user-interfaces
+    Date Written        : October 05, 2021
+    Date Revised        : December 9, 2021
+    Purpose             : Serves as the template for the navbar used on all the pages.
 -->
 
+<!-- uses the URLs defined in urls.py  -->
 {% url 'public:index' as index_url %}
 {% url 'public:index' as index_url %}
-{% url 'public:how' as how_url %}
+{% url 'public:features' as features_url %}
 {% url 'public:about' as about_url %}
+
+<!-- loads and uses static files -->
 {% load static %}
 
 <!-- Navigation Bar -->
@@ -24,13 +26,12 @@
             SENTILYZER
         </a>
         <button class="navbar-toggler text-uppercase font-weight-bold ec-bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            
             <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive" style="background: white;">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link px-0 px-lg-3 {% if request.path == index_url %} active {% endif %}" href="{{ index_url }}">Home</a></li>
-                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link px-0 px-lg-3 {% if request.path == how_url %} active {% endif %}" href="{{ how_url }}">Features</a></li>
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link px-0 px-lg-3 {% if request.path == features_url %} active {% endif %}" href="{{ features_url }}">Features</a></li>
                 <li class="nav-item mx-0 mx-lg-1"><a class="nav-link px-0 px-lg-3 {% if request.path == about_url %} active {% endif %}" href="{{ about_url }}">About Us</a></li>
             </ul>
         </div>

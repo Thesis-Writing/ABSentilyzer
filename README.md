@@ -54,6 +54,11 @@
    ```
    python manage.py startapp public projectfoldername/apps/public
    ```
+##### Additional instructions:
+  * You can make sure that django-heroku is installed by running:
+      ```
+      pip install django-heroku
+      ```
 -----------------------------
 ##### Django Python Scripts Basic Descriptions
 
@@ -77,4 +82,5 @@
    * color:#19456B;
    * color:#16C79A;
    * color: #2C3E50; /*navbar color*/
+-----------------------------
 
