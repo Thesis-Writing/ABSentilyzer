@@ -1,7 +1,3 @@
-'''
-  This module serves as the address book of public app
-'''
-
 # Author            : Keith Barrientos
 # Calling Sequence  : N/A
 # Date Written      : October 05, 2021

@@ -1,13 +1,12 @@
-'''
-    This module is intended for the declaration of all the fields that is used in the form
-'''
-
+# Title             : forms.py
 # Author            : Keith Barrientos
 #                     Afrahly Afable
-# Calling Sequence  : InputForm(forms.Form)
 # Date Written      : October 14, 2021
 # Date Revised      : December 13, 2021
-# Purpose           : Declare all the fields used in the form and provide a customized validation
+# Purpose           : Declare all the fields used in the form and provide 
+#                     a customized validation
+
+
 
 from django import forms
 from pandas import *
@@ -15,7 +14,7 @@ import os
 
 class InputForm(forms.Form):
 
-    #SimpleTextInputType
+    #SingleInputType
     text = forms.CharField(
         widget=forms.Textarea(
             attrs={

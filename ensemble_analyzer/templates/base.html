@@ -1,41 +1,52 @@
 <!-- 
-    This module serves as the base template for the project
-
-    # Author            : Keith Barrientos
-    # Calling Sequence  : N/A
-    # Date Written      : October 05, 2021
-    # Date Revised      : December 9, 2021
-    # Purpose           : A base template where all other pages can extend from 
+    Title               : base.html
+    Author              : Keith Barrientos
+    System Design       : Web user-interfaces
+    Date Written        : October 05, 2021
+    Date Revised        : December 9, 2021
+    Purpose             : A base template where all other pages can extend from. 
+                          This will prevent the repetition of the same code again
+                          and again.
 -->
 
-{% load static %} <!-- will load and use static files in .\static folder -->
+<!-- loads and uses static files -->
+{% load static %} 
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- Required meta tags -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+        <!-- Specifies the title of the page and it's favicon -->
         <title>{%block title %} Ensemble Classifier {% endblock %}</title>
         <link rel="icon" type="image/x-icon" href="{% static 'css/img/favicon.ico' %}" />
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+        
         <!-- Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'theme/css/styles.css' %}" rel="stylesheet" />
-        <!-- Main App CSS-->
+        
+        <!-- Main App's CSS-->
         <link href="{% static 'css/main.css' %}" rel="stylesheet" />
-        <script src="https://code.jquery.com/jquery-1.12.4.min.js">
-    </script>
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     </head>
     <body>
+        <!-- Declared that the contents from navbar.html will be available this template -->
         {% include 'navbar.html' %}
+
         <main id="main">
+            <!-- defines sections in this template -->
             {% block content %}
             {% endblock %}
         </main>
@@ -45,6 +56,5 @@
         
         <!-- Core theme JS-->
         <script src="{% static 'theme/js/scripts.js' %}"></script>
-        <!-- <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script> -->
     </body>
 </html>
