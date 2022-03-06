@@ -1,19 +1,11 @@
-# -*- coding: utf-8 -*-
-
-'''
-    This module interacts with the backend by taking a request and by returning a response.
-'''
-
 # Author            : Keith Barrientos
 #                     Afrahly Afable
-#                     John Edrick Allas
-# Calling Sequence  : index(request: HttpRequest) -> HttpResponse
-#                     home(request: HttpRequest) -> HttpResponse
-#                     how(request: HttpRequest) -> HttpResponse
-#                     about(request: HttpRequest) -> HttpResponse
 # Date Written      : October 5, 2021
 # Date Revised      : December 16, 2021
-# Purpose           : Respond to HTTP Request methods 
+# Purpose           : This module interacts with the backend by 
+#                     taking a request and by returning a response.
+#                     Respond to HTTP Request methods
+#  
 
 
 
@@ -25,7 +17,7 @@ from ensemble_analyzer.apps.public.absentilyzer import ABSentilyzer
 from pandas import *
 import os
 
-
+# calls and display the index.html template as well as its outputs
 def index(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         context = {}
@@ -33,13 +25,17 @@ def index(request: HttpRequest) -> HttpResponse:
         not_input = False
         form = InputForm(request.POST, request.FILES)
         
+        # if there is an input
         if form.is_valid():
             
             isText = form.check_text()
             isCSV = form.check_csv()
             
+            # if input is CSV
             if isCSV:
                 
+                # calls the function that check no. of rows 
+                # and if the column header is "input"
                 included_col, check_rows = form.get_csv()
 
                 main_table_dict = {}
@@ -62,7 +58,6 @@ def index(request: HttpRequest) -> HttpResponse:
                 
                 sentiment_count_dict = get_sentiment_count(final_sentence_polarity_table_dict)
                 
-                print(check_rows)
                 return render(request, "index.html", 
                             {'form': form, 
                                 'main_table_dict': main_table_dict, 
@@ -71,13 +66,11 @@ def index(request: HttpRequest) -> HttpResponse:
                                 'sentiment_count_dict': sentiment_count_dict,
                                 'csv_allowed':'yes',
                                 'row_length':check_rows})
-
+            
+            # elif input is Text
             elif isText:
-                print("Here")
                 
                 inputText = form.get_text()
-                
-                print("Input text")
                 
                 main_table_dict = {}
                 final_sentence_polarity_table_dict = {}
@@ -113,19 +106,19 @@ def index(request: HttpRequest) -> HttpResponse:
         form = InputForm()
         return render(request, "index.html", {'form': form})
 
-
+# calls and displays index.html
 def home(request: HttpRequest) -> HttpResponse:
     return render(request, "index.html")
 
+# calls and displays features.html
+def features(request: HttpRequest) -> HttpResponse:
+    return render(request, "features.html")
 
-def how(request: HttpRequest) -> HttpResponse:
-    return render(request, "how.html")
-
-
+# calls and displays about.html
 def about(request: HttpRequest) -> HttpResponse:
     return render(request, "about.html")
 
-
+# calls and displays the function that gets the most common aspects
 def get_most_common_aspect(main_table_dict):
     import collections
     import operator
@@ -139,6 +132,7 @@ def get_most_common_aspect(main_table_dict):
     aspect_dict = dict( sorted(aspect_dict.items(), key=operator.itemgetter(1),reverse=True))
     return aspect_dict
 
+# calls and displays the function that gets the sentiment count
 def get_sentiment_count(final_sentence_polarity_table_dict):
     pos_count = 0
     neg_count = 0

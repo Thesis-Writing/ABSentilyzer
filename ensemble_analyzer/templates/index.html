@@ -1,18 +1,26 @@
 <!-- 
-    This module extends the base template and is where the analyzer is located.
-
-    # Author            : Group 4
-    # Calling Sequence  : N/A
-    # Date Written      : October 24, 2021
-    # Date Revised      : December 12, 2021
-    # Purpose           : Serves as the template for the default page shown
-                            on the website if no other page is specified when 
-                            a user requests the site.
+    Title               : index.html
+    Authors             : Keith Barrientos
+                          Afrahly Afable
+    System Design       : Web user-interfaces
+    Date Written        : October 05, 2021
+    Date Revised        : December 9, 2021
+    Purpose             : Serves as the template for the default page shown
+                          on the website if no other page is specified when 
+                          a user requests the site. This is also where the
+                          analyzer is located.
 -->
 
+<!-- inherits the contents of the parent template, base.html -->
 {% extends 'base.html' %}
-{% url 'public:how' as how_url %}
+
+<!-- uses the Feature Page's URL defined in urls.py  -->
+{% url 'public:feature' as feature_url %}
+
+<!-- loads and uses static files -->
 {% load static %}
+
+<!-- Specifies the title of the page -->
 {% block title %} Ensemble Classifier {% endblock %}
 
 {% block content %}
@@ -20,16 +28,19 @@
 <header style="background-color: #2C3E50;" class="masthead text-white text-center">
     <div class="container d-flex align-items-center flex-column">
         <h5 class="masthead-heading text-uppercase mb-0">Aspect Based Sentiment Analyzer</h5>
-        <!-- Masthead Subheading-->
     </div>
 </header>
 
+<!-- Page's main contents -->
 <body>
-    <!-- Page's main contents -->
     <div class="container contents py-5" style="height: 50vh;">
         <form action="" method="POST" enctype="multipart/form-data" id="form_text" >
+            <!-- implemented to avoid malicious attacks -->
             {% csrf_token %}
+
+            <!-- calls the single input form field declared at forms.py -->
             {{ form.text }}
+
             <div class="btn-toolbar">
                 <button type="button" name="modalName" class="btn btn-primary btn-sm" id="csvModal" data-bs-toggle="modal" data-bs-target="#exampleModal">Upload CSV</button>
                 <p class="px-2">or</p>
@@ -55,62 +66,62 @@
     </div>
     
 
-    <!-- If the text inputted passed the requirements and has the right format, then continue -->
+    <!-- If the input text passed the requirements and has the right format, then continue -->
     {% if text_allowed == "yes" %}
     <div class="container">
-    <div class="row">
-        <div class="col">
-            <div class="table-responsive py-5" id="tables">
-                <h6>AB Sentilyzer's Results on Single Input Classification</h6>
-                <div style="table-layout: fixed;">
-                    <table class="table" id="table1">
-                        <thead class="table text-left" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
-                            <tr>
-                                <th class="sticky-top" width="50%" scope="col" style="vertical-align: text-top;">Original Input</th>
-                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Extracted Aspects</th>
-                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Aspect Polarity/ies</th>
-                                <th class="sticky-top" scope="col" style="vertical-align: text-top;">Sentence Polarity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for key,values in main_table_dict.items %}
+        <div class="row">
+            <div class="col">
+                <div class="table-responsive py-5" id="tables">
+                    <h6>AB Sentilyzer's Results on Single Input Classification</h6>
+                    <div style="table-layout: fixed;">
+                        <table class="table" id="table1">
+                            <thead class="table text-left" style="background-color: #2c3e50; color: white; position: sticky;top: 0">
                                 <tr>
-                                    <td style="text-align: left"> {{ values.0 }} </td>
-                                    <td style="text-align: left;"> 
-                                        {% for v in values.1 %} 
-                                            {{v}}<br>
-                                        {%endfor%} 
-                                    </td>
-                                    <td style="text-align: left"> 
-                                        {% for x in values.2 %} 
-                                            {{x}}<br>
-                                        {%endfor%} 
-                                    </td>
-                                    {% if values.3 == 'pos' %}
-                                        {% with name="positive" %}
-                                        <td style="text-align: center"> {{ name }} </td>
-                                        {% endwith %}
-                                    {% elif values.3 == 'neg' %}
-                                        {% with name="negative" %}
-                                        <td style="text-align: center"> {{ name }} </td>
-                                        {% endwith %}
-                                    {% elif values.3 == 'neu' %}
-                                        {% with name="neutral" %}
-                                        <td style="text-align: center"> {{ name }} </td>
-                                        {% endwith %}
-                                    {% endif %}
+                                    <th class="sticky-top" width="50%" scope="col" style="vertical-align: text-top;">Original Input</th>
+                                    <th class="sticky-top" scope="col" style="vertical-align: text-top;">Extracted Aspects</th>
+                                    <th class="sticky-top" scope="col" style="vertical-align: text-top;">Aspect Polarity/ies</th>
+                                    <th class="sticky-top" scope="col" style="vertical-align: text-top;">Sentence Polarity</th>
                                 </tr>
-                            {%endfor%}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for key,values in main_table_dict.items %}
+                                    <tr>
+                                        <td style="text-align: left"> {{ values.0 }} </td>
+                                        <td style="text-align: left;"> 
+                                            {% for v in values.1 %} 
+                                                {{v}}<br>
+                                            {%endfor%} 
+                                        </td>
+                                        <td style="text-align: left"> 
+                                            {% for x in values.2 %} 
+                                                {{x}}<br>
+                                            {%endfor%} 
+                                        </td>
+                                        {% if values.3 == 'pos' %}
+                                            {% with name="positive" %}
+                                            <td style="text-align: center"> {{ name }} </td>
+                                            {% endwith %}
+                                        {% elif values.3 == 'neg' %}
+                                            {% with name="negative" %}
+                                            <td style="text-align: center"> {{ name }} </td>
+                                            {% endwith %}
+                                        {% elif values.3 == 'neu' %}
+                                            {% with name="neutral" %}
+                                            <td style="text-align: center"> {{ name }} </td>
+                                            {% endwith %}
+                                        {% endif %}
+                                    </tr>
+                                {%endfor%}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <br>
+        <br>
     </div>
 
-    <!-- If the file uploaded passed the requiremens and has the right format, then continue -->
+    <!-- Else if the file uploaded passed the requiremens and has the right format, then continue -->
     {% elif csv_allowed == "yes" %}
     <div class="container">
         <!-- Show charts -->
@@ -191,9 +202,7 @@
                     }
                 </script>
                 <!-- Barchart -->
-                <div class="">
-
-                </div>
+                <div class=""></div>
                 
                 <!-- End of aspect count array for bar chart scripts-->
                 <br>
@@ -201,7 +210,6 @@
             <!-- End of most common aspects scripts -->
             
             <!-- Show percentage of sentiments chart -->
-            <!-- <p>Sentiment Polarity Distribution</p> -->
             <script>
                 const sent_count_dict = {};
             </script>
@@ -242,6 +250,8 @@
             </script>
             <!-- End of  show percentage of sentiments chart scripts -->
         </div>
+        
+        <!-- Output module -->
         <div class="row">
             <div class="col">
                 <div class="table-responsive py-4" id="tables">
@@ -291,69 +301,10 @@
                 </div>
             </div>
         </div>
-    
-    
     </div>
     {% endif %}
-    <!-- End of show charts scripts-->
 
-    <!-- Prevent resubmit -->
-    <script>
-        if ( window.history.replaceState ) {
-          window.history.replaceState( null, null, window.location.href );
-        }
-    </script>
-
-
-    <!-- JS Code for the Spinner and disabling buttons while processing  (text)-->
-    <script>
-    $('#form_text').submit(function() {
-        // disableFunc()
-        $(this).find('button[type=submit]').prop('disabled', true);
-        $(this).find('button[type=button]').prop('disabled', true);
-        // show loader
-        document.getElementById("loader").style.display = 'block';
-    });
-    </script>
-
-    <!-- JS Code for Progress Bar -->
-    <script>
-        var i = 0;
-        function showProgressBar(process_time){
-            console.log("Passed process time in ms:");
-            console.log(process_time);
-            document.getElementById("progressbar").style.display = 'block';
-            if (i == 0) {
-                console.log(process_time);
-                i = 1;
-                var element = document.getElementById("bar");
-                var width = 1;
-                var interval = process_time/100;
-                console.log("Progress bar change every " + interval.toString() + " milliseconds");
-                var id = setInterval(frame, interval);
-                function frame() {
-                    if (width >= 100) {
-                        clearInterval(id);
-                        i = 0;
-                    } else {
-                        width++;
-                            element.style.width = width + "%";
-                            element.innerHTML = width  + "%";
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- JS Code for Scrollbar -->
-    <script>
-        window.scrollTo({
-            top: 500,
-            behavior: 'smooth'
-        }); 
-    </script>
-
-    <!-- Modal for CSV -->
+    <!-- Modal for Multiple Input Form (CSV) -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -367,7 +318,10 @@
                                 <p><strong>Note!</strong> The column you want to classify must have an "input" header name. For more details, <a class="noteLink" href="http://127.0.0.1:7000/Features#featurespage">Click here</a>.</p>
                             </div>
                             <div class="row">
+                                <!-- implemented to avoid malicious attacks -->
                                 {% csrf_token %}
+
+                                <!-- calls the multiple input form field declared at forms.py -->
                                 {{ form.csv }}
                             </div>
                             <div class="btn-toolbar">
@@ -452,45 +406,106 @@
             } 
             document.getElementById('FileUploadCSV').addEventListener('change', previewCSV);
         </script>
-
-        <!-- Disabling the form on submission (CSV) -->
-        <script>
-            function disableFunc() {
-                document.getElementById("textAreaWidget").disabled = true;
-                document.getElementById("csvModal").disabled = true;
-                document.getElementById("btnClassifyText").disabled = true;
-            }
-        </script>
     </div>
+
+    <!-- Prevents resubmission -->
+    <script>
+        if ( window.history.replaceState ) {
+          window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
+
+    <!-- Disables buttons while processing (text)-->
+    <script>
+        $('#form_text').submit(function() {
+            // disableFunc()
+            $(this).find('button[type=submit]').prop('disabled', true);
+            $(this).find('button[type=button]').prop('disabled', true);
+            // show loader
+            document.getElementById("loader").style.display = 'block';
+        });
+    </script>
+
+    <!-- Disabling the form on submission (CSV) -->
+    <script>
+        function disableFunc() {
+            document.getElementById("textAreaWidget").disabled = true;
+            document.getElementById("csvModal").disabled = true;
+            document.getElementById("btnClassifyText").disabled = true;
+        }
+    </script>
+
+    <!-- JS Code for Progress Bar -->
+    <script>
+        var x = 0;
+        function showProgressBar(process_time){
+            console.log("Passed process time in ms:");
+            console.log(process_time);
+            document.getElementById("progressbar").style.display = 'block';
+            if (x == 0) {
+                console.log(process_time);
+                x = 1;
+                var element = document.getElementById("bar");
+                var width = 1;
+                var interval = process_time/100;
+                console.log("Progress bar change every " + interval.toString() + " milliseconds");
+                var id = setInterval(frame, interval);
+                function frame() {
+                    if (width >= 100) {
+                        clearInterval(id);
+                        x = 0;
+                    } else {
+                        width++;
+                            element.style.width = width + "%";
+                            element.innerHTML = width  + "%";
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- JS Code for Scrollbar -->
+    <script>
+        window.scrollTo({
+            top: 500,
+            behavior: 'smooth'
+        }); 
+    </script>
 
     <!-- If the file type of the uploaded file is not csv, return the error alert box -->
     {% if filetype_error %}
-    <script>alert("Unsupported file type.")</script> 
+        <script>alert("Unsupported file type.")</script> 
     {% endif %}
 
     <!-- If there is no input and the form was submitted, return the error alert box -->
     {% if no_input %}
-    <script>alert("You have to write or upload something!")</script> 
+    <script>
+        alert("You have to write or upload something!")
+    </script> 
     {% endif %}
 
     {% if not_input %}
-    <script>alert("Column name not input!")</script> 
+    <script>
+        alert("Column name not input!")
+    </script> 
     {% endif %}
 
     <!-- If the uploaded CSV exceeds the minimum row allowed, return the error alert box -->
     {% if csv_rowError %}
-    <script>alert("Uploaded CSV File is greater than 500 rows.")</script> 
+    <script>
+        alert("Uploaded CSV File is greater than 500 rows.")
+    </script> 
     {% endif %}
 
     <!-- Footer of the Page -->
     <div class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12 mt-1 mb-0">
-                <p class="mb-3 text-center" style="color:#262626; font-size:15px;">© 2021 copyright all right reserved</p>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mt-1 mb-0">
+                    <p class="mb-3 text-center" style="color:#262626; font-size:15px;">© 2021 copyright all right reserved</p>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 
     {% endblock %}

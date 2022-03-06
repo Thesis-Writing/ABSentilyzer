@@ -1,38 +1,11 @@
-'''
-  This module is intended for the classification class used in the performance
-  evalutation of aspect term polarity classification.
-'''
-
-# Author            : Afrahly Afable
-# Calling Sequence  : Classifier(train_text_list=None,train_aspect_dict_list=None,
-#                                 test_text_list=None,test_aspect_dict_list=None,
-#                                 test_aspect_list=None,polarity="pos"or"neg"or"neu",
-#                                 mode="test"or"impelement")
-#                        > classify()
-#                          > get_data_model()
-#                            > preprare_data_model()
-#                            > get_extra_features()
-#                          > train_test_mnb()
-#                          > train_test_svm()
-#                        > classify_sentence()
-# Date Written      : December 1, 2021
-# Date Revised      : December 27, 2021
-# Purpose           : Classify aspect term polarity
-# Data Structures   : Input Variable/s:
-#                       - train_text_list        : LIST
-#                       - train_aspect_dict_list : LIST
-#                       - test_text_list         : LIST
-#                       - test_aspect_dict_list  : LIST
-#                       - test_aspect_list       : LIST
-#                       - train_label            : LIST
-#                       - test_label             : LIST
-#                       - polarity               : STRING
-#                       - mode                   : STRING
-#                     Output Variable/s:
-#                       - atpc_eval_dict     : DICTIONARY
-#                       - ensemble_pred_list : LIST
-#                       - ensemble_prob_list : LIST
-#                       
+# Program Title         : aspect_polarity_classifier
+# Author                : Afrahly Afable
+# General System Design : This module is intended for the classification
+#                         class used in aspect term polarity classification.
+# Date Written          : December 1, 2021
+# Date Revised          : December 27, 2021
+# Purpose               : Classify aspect term polarity
+# Data Structures       : List, Dictionary, Integer, String, DataFrame
 
 import warnings
 import numpy as np
@@ -132,47 +105,7 @@ class Classifier:
           ensemble_pred_list.append(ensemble_pred.tolist())
           ensemble_prob_list.append(ensemble_prob.tolist())
 
-      if self.mode == "test":
-        (svm_accuracy, svm_precision, 
-            svm_recall, svm_f1) = get_al_metrics(svm_pred_list, 
-                                                y_test_list, "micro",
-                                                mode="model",
-                                                classifier="SVM")
-        (mnb_accuracy, mnb_precision, 
-            mnb_recall, mnb_f1) = get_al_metrics(mnb_pred_list, 
-                                                y_test_list, "micro",
-                                                mode="model",
-                                                classifier="MNB")
-        (ensemble_accuracy, 
-            ensemble_precision, 
-            ensemble_recall, 
-            ensemble_f1) = get_al_metrics(ensemble_pred_list, 
-                                            y_test_list, "micro",
-                                            mode="model",
-                                            classifier="ENSEMBLE")
-
-        display_footer(self.polarity)
-        display_model_performance(svm_accuracy,svm_precision,svm_recall,svm_f1,
-                                  mnb_accuracy,mnb_precision,mnb_recall,mnb_f1,
-                                  ensemble_accuracy,ensemble_precision,
-                                  ensemble_recall, ensemble_f1)
-
-        atpc_eval_dict = {'SVM': [svm_accuracy,
-                                  svm_precision,
-                                  svm_recall,
-                                  svm_f1],
-                          'MNB': [mnb_accuracy,
-                                  mnb_precision,
-                                  mnb_recall,
-                                  mnb_f1],
-                          'Ensemble SVM-MNB': [ensemble_accuracy,
-                                              ensemble_precision,
-                                              ensemble_recall,
-                                              ensemble_f1]}
-
-        return (ensemble_prob_list, atpc_eval_dict)
-      elif self.mode == "implement":
-        return (ensemble_prob_list)
+      return (ensemble_prob_list)
 
   def get_data_model(self, train_text_list=None, train_aspect_dict_list=None, 
                     target_aspect_list=None, test_text=None, 
@@ -350,37 +283,3 @@ class Classifier:
         svm_accuracy) = self.train_test_svm(X_train, y_train, X_test, y_test)
     (ensemble_pred, 
         ensemble_prob) = ensemble(y_pred_svm, y_pred_mnb, svm_proba, mnb_proba)
-
-    y_test = encode_label(y_test)
-    y_pred_svm = encode_label(y_pred_svm)
-    y_pred_mnb = encode_label(y_pred_mnb)
-    ensemble_pred = encode_label(ensemble_pred)
-
-    (svm_accuracy, svm_precision,
-        svm_recall, svm_f1, s_tp, 
-        s_fp, s_tn, s_fn) = get_sl_metrics(y_test, y_pred_svm, 
-                                          classifier="SVM")
-    (mnb_accuracy, mnb_precision,
-        mnb_recall, mnb_f1, m_tp, 
-        m_fp, m_tn, m_fn) = get_sl_metrics(y_test, y_pred_mnb, 
-                                          classifier="MNB")
-    (ensemble_accuracy, 
-        ensemble_precision, 
-        ensemble_recall, 
-        ensemble_f1,
-        e_tp, e_fp, e_tn, e_fn) = get_sl_metrics(y_test, ensemble_pred, 
-                                                classifier="ENSEMBLE")
-
-    print("==============================================================")
-    print("           SENTENCE LEVEL WITHOUT ASPECT EVALUATION           ")
-    print("==============================================================")
-    display_model_performance(svm_accuracy, svm_precision, svm_recall, svm_f1, 
-                              mnb_accuracy, mnb_precision, mnb_recall, mnb_f1,
-                              ensemble_accuracy, ensemble_precision, 
-                              ensemble_recall, ensemble_f1)
-    print("\nSVM-TP: {}, SVM-FP: {}, SVM-TN: {}, SVM-FN: {}".format(s_tp, s_fp, 
-                                                                  s_tn, s_fn))
-    print("MNB-TP: {}, MNB-FP: {}, MNB-TN: {}, MNB-FN: {}".format(m_tp, m_fp, 
-                                                                  m_tn, m_fn))
-    print("ENS-TP: {}, ENS-FP: {}, ENS-TN: {}, ENS-FN: {}".format(e_tp, e_fp, 
-                                                                  e_tn, e_fn))

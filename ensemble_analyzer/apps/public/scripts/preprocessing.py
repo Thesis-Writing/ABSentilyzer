@@ -1,20 +1,15 @@
 # -*- coding: utf-8 -*-
 
-'''
-  This module is intended for preprocessing the user input before aspect term extraction.
-  Preprocessing eliminates noisy and irrelevant characters and words from the input of user.
-'''
-
-# Authors           : Afrahly Afable
-#                     John Edrick Allas
-# Calling Sequence  : preprocess(data)
-# Date Written      : October 1, 2021
-# Date Revised      : December 13, 2021
-# Purpose           : To prerpcess the user input
-# Data Structures   : Input Variable/s:
-#                       - data            : LIST
-#                     Output Variable/s:
-#                       - preprocessed    : LIST
+# Program Title         : preprocessing.py
+# Author                : Afrahly Afable
+# General System Design : This module is intended for preprocessing the 
+#                         user input before aspect term extraction.
+#                         Preprocessing eliminates noisy and irrelevant 
+#                         characters and words from the input of user.
+# Date Written          : October 1, 2021
+# Date Revised          : December 13, 2021
+# Purpose               : To prerprocess the user input
+# Data Structures       : List, Dictionary, Integer, String, DataFrame
 
 import os
 import nltk

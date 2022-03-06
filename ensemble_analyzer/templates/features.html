@@ -1,16 +1,20 @@
 <!-- 
-    This module extends the base template and is where the the documentation is located
-
-    # Author            : Group 4
-    # Calling Sequence  : N/A
-    # Date Written      : October 5, 2021
-    # Date Revised      : December 9, 2021
-    # Purpose           : Describes and explain the features of the website as well as 
-                          the instructions in using the website
+    Title               : features.html
+    Authors             : Keith Barrientos
+    System Design       : Web user-interfaces
+    Date Written        : October 05, 2021
+    Date Revised        : December 9, 2021
+    Purpose             : Describes and explain the features of the website as well as 
+                          the instructions in using the website.
 -->
 
+<!-- inherits the contents of the parent template, base.html -->
 {% extends 'base.html' %}
+
+<!-- loads and uses static files -->
 {% load static %}
+
+<!-- Specifies the title of the page -->
 {% block title %} Features {% endblock %}
 
 {% block content %}
@@ -70,8 +74,7 @@
     </div>
 </section>
 
-<!-- Feature modals -->
-<!-- Feature 1: Text Feature-->
+<!-- Modal Feature 1: Text Feature-->
 <div class="portfolio-modal modal fade" id="textFeature" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content" style="padding:25px">
@@ -94,7 +97,8 @@
         </div>
     </div>
 </div>
-<!-- Feature 2 CSV -->
+
+<!-- Modal Feature 2: CSV Feature -->
 <div class="portfolio-modal modal fade" id="csvFeature" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content" style="padding:15px">
@@ -143,7 +147,7 @@
     </div>
 </div>
 
-<!-- JS Scripts for UI -->
+<!-- Scripts for Back-To-Top Scroll -->
 <script>
     jQuery(document).ready(function() {
         var offset = 220;
