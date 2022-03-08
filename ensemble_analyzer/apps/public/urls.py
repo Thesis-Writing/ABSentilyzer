@@ -10,6 +10,6 @@ from . import views
 app_name="public"
 urlpatterns = [
     path("", views.index, name="index"),
-    path("Features", views.how, name="features"),
+    path("Features", views.features, name="features"),
     path("About", views.about, name="about"),
 ]
